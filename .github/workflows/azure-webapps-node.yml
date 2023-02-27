@@ -30,7 +30,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "needs-workshop"
-          slot-name: "dev"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FE11A90E90CC4061B8128FBCC45B7E01 }}
+          app-name: "Tournament-Life"
+          slot-name: "Production"
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DDE8C2BF26EB43A6812C9E04D12D63AE }}
           package: .
