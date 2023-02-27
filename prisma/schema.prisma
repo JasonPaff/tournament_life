@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  displayName  String       @unique @db.VarChar(48)
+  email        String       @unique
+  isActive     Boolean      @default(true)
+  isArchived   Boolean      @default(false)
+  name         String?      @db.VarChar(48)
+  role         Role         @default(USER)
+  stytchUserId String       @unique
+  updatedAt    DateTime?    @updatedAt
+  Template     Template[]
+  GameFormat   GameFormat[]
+  GameType     GameType[]
+  Venue        Venue[]
+
+  @@index([email])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+// TODO: add blind structure
+model Template {
+  id              String       @id @default(uuid())
+  addonChips      Int?
+  addonCost       Decimal?     @db.Decimal(12, 2)
+  addonFee        Decimal?     @db.Decimal(12, 2)
+  blindLvlMinutes Int?
+  createdAt       DateTime     @default(now())
+  createdBy       String
+  entryCost       Decimal?     @db.Decimal(12, 2)
+  entryFee        Decimal?     @db.Decimal(12, 2)
+  fixedBounty     Decimal?     @db.Decimal(12, 2)
+  gameTypeId      String?
+  guarantee       Decimal?     @db.Decimal(12, 2)
+  isArchived      Boolean      @default(false)
+  isSng           Boolean      @default(false)
+  lateRegMinutes  Int?
+  name            String       @db.VarChar(48)
+  rebuyChips      Int?
+  rebuyCost       Decimal?     @db.Decimal(12, 2)
+  rebuyFee        Decimal?     @db.Decimal(12, 2)
+  startingChips   Int?
+  startTime       DateTime?
+  tableSize       Int?
+  updatedAt       DateTime?    @updatedAt
+  venueId         String?
+  gameFormats     GameFormat[]
+  creator         User         @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  gameType        GameType?    @relation(fields: [gameTypeId], references: [id])
+  venue           Venue?       @relation(fields: [venueId], references: [id])
+}
+
+model GameFormat {
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+  createdBy  String
+  isArchived Boolean    @default(false)
+  name       String     @db.VarChar(48)
+  templates  Template[]
+  creator    User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@unique([createdBy, name])
+}
+
+model GameType {
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+  createdBy  String
+  isArchived Boolean    @default(false)
+  name       String     @db.VarChar(48)
+  Template   Template[]
+  creator    User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@unique([createdBy, name])
+}
+
+model Venue {
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+  createdBy  String
+  isArchived Boolean    @default(false)
+  name       String     @db.VarChar(48)
+  type       VenueType
+  Template   Template[]
+  creator    User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@unique([createdBy, name])
+}
+
+enum VenueType {
+  Physical
+  Virtual
+}
