@@ -21,7 +21,6 @@ export const Dashboard = () => {
     if (isError) return <div className={'text-4xl'}>Error!</div>;
 
     return <div className={'grid grid-cols-2 gap-y-1'}>
-        <span className={'font-bold'}>Dashboard Route</span>
         <span className={'font-mediums'}>Name:</span>
         <span>{user?.name}</span>
         <span className={'font-mediums'}>Display Name:</span>
