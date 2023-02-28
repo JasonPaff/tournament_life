@@ -32,5 +32,5 @@ jobs:
         with:
           app-name: "Tournament-Life"
           slot-name: "Production"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DDE8C2BF26EB43A6812C9E04D12D63AE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0521AF39B49442508F4B9217B6539DB7 }}
           package: .
