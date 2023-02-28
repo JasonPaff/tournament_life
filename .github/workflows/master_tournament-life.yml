@@ -86,7 +86,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "TournamentLife"
+          app-name: "Tournament-Life"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0D2F67621A484F388844188CAD385038 }}
           package: .
