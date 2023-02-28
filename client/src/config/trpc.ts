@@ -11,6 +11,7 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
 export const trpc = createTRPCReact<AppRouter>();
 
 
+
 export const trpcClient = trpc.createClient({
     links: [
         httpBatchLink({
