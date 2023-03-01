@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc --project .",
-    "build-prod": "npm install && npm run build && cd client && npm install && npm run build",
+    "build-prod": "npm install && npm run build && prisma generate && cd client && npm install && npm run build",
     "server": "nodemon --verbose --watch \"server\" --ext \"ts,json\" --exec ts-node server/server.ts",
     "client": "cd client && npm run dev && cd ..",
     "dev": "concurrently \"npm run client\" \"npm run server\""
