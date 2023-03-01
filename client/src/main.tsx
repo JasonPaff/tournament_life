@@ -1,5 +1,4 @@
 import {queryClient, router, stytch, trpc, trpcClient} from "./config";
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {QueryClientProvider} from "@tanstack/react-query";
 import {RouterProvider} from "@tanstack/react-router";
 import {StytchProvider} from "@stytch/react";
@@ -18,7 +17,6 @@ if (!rootElement.innerHTML) {
                 <QueryClientProvider client={queryClient}>
                     <StytchProvider stytch={stytch}>
                         <RouterProvider router={router} />
-                        <ReactQueryDevtools initialIsOpen={false} position={'top-left'} />
                         <TailwindToaster />
                     </StytchProvider>
                 </QueryClientProvider>
