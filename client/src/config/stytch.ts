@@ -10,4 +10,5 @@ export const stytchConfig = {
     products: [Products.passwords],
 };
 
-export const stytch = new StytchUIClient(import.meta.env.VITE_REACT_APP_STYTCH_PUBLIC_TOKEN);
+// export const stytch = new StytchUIClient(import.meta.env.VITE_REACT_APP_STYTCH_PUBLIC_TOKEN);
+export const stytch = new StytchUIClient('public-token-test-45360d86-40ca-447e-b844-be07fbfab6bc');

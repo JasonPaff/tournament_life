@@ -13,7 +13,8 @@ export const trpc = createTRPCReact<AppRouter>();
 export const trpcClient = trpc.createClient({
     links: [
         httpBatchLink({
-            url: import.meta.env.VITE_REACT_APP_API,
+            // url: import.meta.env.VITE_REACT_APP_API,
+            url: 'https://tournament-life.azurewebsites.net/trpc',
         }),
     ],
 });

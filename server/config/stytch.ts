@@ -7,8 +7,8 @@ const agent = new https.Agent({
 });
 
 export const stytchClient = new stytch.Client({
-    project_id: process.env.STYTCH_PROJECT_ID || '',
-    secret: process.env.STYTCH_SECRET || '',
-    env: process.env.STYTCH_PROJECT_ENV === 'live' ? stytch.envs.live : stytch.envs.test,
+    project_id: process.env.STYTCH_PROJECT_ID || 'project-test-d08cf405-478e-47a3-ae8a-91b36036d966',
+    secret: process.env.STYTCH_SECRET || 'secret-test-_bIUUEgkM9WExVL_BxO-BMpzEIUM_hktqsw=',
+    env: stytch.envs.test,
     agent,
 });
