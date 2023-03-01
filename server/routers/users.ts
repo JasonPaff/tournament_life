@@ -1,6 +1,6 @@
+import { protectedProcedure, publicProcedure, router, stytchClient } from '../config';
 import { handleError, zodErrors, zodHelpers } from '../utils';
 import { z } from 'zod';
-import { protectedProcedure, publicProcedure, router, stytchClient } from '../config';
 
 export const userRouter = router({
     getUser: protectedProcedure

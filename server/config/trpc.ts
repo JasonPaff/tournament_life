@@ -30,7 +30,8 @@ export const createContextInner = async () => {
     // TODO: Use authed user.
     return {
         prisma,
-        user: { userId: 'bb8516a2-4fbb-48d4-8e31-e2fb6649e424' },
+        // user: { userId: 'bb8516a2-4fbb-48d4-8e31-e2fb6649e424' },
+        user: { userId: 'clc49kkv10000jppk1wl2sz33' },
     };
 };
 
