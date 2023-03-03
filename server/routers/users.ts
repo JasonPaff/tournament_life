@@ -1,18 +1,22 @@
 import { protectedProcedure, publicProcedure, router, stytchClient } from '../config';
 import { handleError, zodErrors, zodHelpers } from '../utils';
 import { z } from 'zod';
+import { User } from '@prisma/client';
 
 export const userRouter = router({
     getUser: protectedProcedure
         .input(z.string(zodErrors.string('ID', 'The database id of the user.')))
         .query(async ({ ctx, input }) => {
+            let user: User | null = null;
             try {
-                return ctx.prisma.user.findFirst({
+                user = await ctx.prisma.user.findFirst({
                     where: { id: input },
                 });
-            } catch (err) {
-                throw new Error(err?.message);
+            } catch (err: any) {
+                throw err;
             }
+
+            return user;
         }),
     getUsers: protectedProcedure.query(async ({ ctx }) => await ctx.prisma.user.findMany()),
     createUser: publicProcedure
