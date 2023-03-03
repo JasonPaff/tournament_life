@@ -5,11 +5,15 @@ import { z } from 'zod';
 export const userRouter = router({
     getUser: protectedProcedure
         .input(z.string(zodErrors.string('ID', 'The database id of the user.')))
-        .query(async ({ ctx, input }) =>
-            ctx.prisma.user.findFirst({
-                where: { id: input },
-            })
-        ),
+        .query(async ({ ctx, input }) => {
+            try {
+                return ctx.prisma.user.findFirst({
+                    where: { id: input },
+                });
+            } catch (err) {
+                throw new Error(err?.message);
+            }
+        }),
     getUsers: protectedProcedure.query(async ({ ctx }) => await ctx.prisma.user.findMany()),
     createUser: publicProcedure
         .input(
