@@ -6,6 +6,13 @@ import logger from 'morgan';
 import path from 'path';
 import cors from 'cors';
 
+const appInsights = require('applicationinsights');
+appInsights
+    .setup(
+        'InstrumentationKey=a27ba2c0-11e8-4c85-9404-7a62bb30e35e;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/'
+    )
+    .start();
+
 const PORT = process.env.PORT || 5000;
 
 const server = express();
