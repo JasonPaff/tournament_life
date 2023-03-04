@@ -15,7 +15,6 @@ export const userRouter = router({
             } catch (err: any) {
                 throw err;
             }
-
             return user;
         }),
     getUsers: protectedProcedure.query(async ({ ctx }) => await ctx.prisma.user.findMany()),

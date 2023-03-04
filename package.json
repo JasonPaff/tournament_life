@@ -6,11 +6,10 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc --project .",
-    "build-prod": "npm install && npm run build && cd client && npm install && npm run build && cd..",
+    "build-prod": "npm install && prisma generate && npm run build && cd client && npm install && npm run build && cd..",
     "server": "nodemon --verbose --watch \"server\" --ext \"ts,json\" --exec ts-node server/server.ts",
     "client": "cd client && npm run dev && cd ..",
-    "dev": "concurrently \"npm run client\" \"npm run server\"",
-    "postinstall": "prisma generate"
+    "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "keywords": [],
   "author": "Jason Paff",
@@ -21,6 +20,7 @@
     "applicationinsights": "^2.5.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "prisma": "^4.10.1",
     "stytch": "^5.17.0",
     "validator": "^13.7.0",
     "zod": "^3.20.2"
@@ -36,7 +36,6 @@
     "nodemon": "^2.0.20",
     "prettier": "^2.8.4",
     "prettier-plugin-prisma": "^4.10.0",
-    "prisma": "^4.10.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
