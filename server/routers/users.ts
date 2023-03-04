@@ -28,7 +28,7 @@ export const userRouter = router({
                     .min(8, zodErrors.min('password', 8)),
             })
         )
-        .mutation(async ({ ctx, input }): Promise<User | null> => {
+        .mutation(async ({ ctx, input }) => {
             // * create stytch user account.
             const stytchResponse = await stytchClient.passwords
                 .create({ email: input.email, password: input.password })
@@ -37,7 +37,7 @@ export const userRouter = router({
             console.log('STYTCH USER CREATED!', stytchResponse);
 
             // * Create the user in the database.
-            const user = await ctx.prisma.user
+            await ctx.prisma.user
                 .create({
                     data: {
                         displayName: input.displayName,
@@ -46,16 +46,13 @@ export const userRouter = router({
                         stytchUserId: stytchResponse.user.user_id,
                     },
                 })
-                .catch(async (err: unknown) => {
+                .catch((err: unknown) => {
                     console.log('PRISMA ERROR!', err);
                     // TODO: rollback stytch user account.
                     //await stytchClient.passwords.delete({ userId: res.user.user_id });
                     handleError(err);
                     return null;
                 });
-            console.log('USER CREATED!', user);
-
-            return user;
         }),
     updateUser: protectedProcedure
         .input(
