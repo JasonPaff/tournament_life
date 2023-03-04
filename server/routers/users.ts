@@ -6,11 +6,14 @@ export const userRouter = router({
     getUser: protectedProcedure
         .input(z.string(zodErrors.string('ID', 'The database id of the user.')))
         .query(async ({ ctx, input }) => {
-            return await ctx.prisma.user
+            let user: User | null = null;
+            await ctx.prisma.user
                 .findFirst({
                     where: { id: input },
                 })
+                .then((u) => (user = u))
                 .catch(handleError);
+            return user;
         }),
     getUsers: protectedProcedure.query(async ({ ctx }) => await ctx.prisma.user.findMany()),
     createUser: publicProcedure
