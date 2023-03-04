@@ -1,7 +1,7 @@
 import { protectedProcedure, publicProcedure, router, stytchClient } from '../config';
 import { handleError, zodErrors, zodHelpers } from '../utils';
-import { z } from 'zod';
 import { User } from '@prisma/client';
+import { z } from 'zod';
 
 export const userRouter = router({
     getUser: protectedProcedure
