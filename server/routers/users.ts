@@ -7,15 +7,9 @@ export const userRouter = router({
     getUser: protectedProcedure
         .input(z.string(zodErrors.string('ID', 'The database id of the user.')))
         .query(async ({ ctx, input }) => {
-            let user: User | null = null;
-            try {
-                user = await ctx.prisma.user.findFirst({
-                    where: { id: input },
-                });
-            } catch (err: any) {
-                throw err;
-            }
-            return user;
+            return await ctx.prisma.user.findFirst({
+                where: { id: input },
+            });
         }),
     getUsers: protectedProcedure.query(async ({ ctx }) => await ctx.prisma.user.findMany()),
     createUser: publicProcedure
@@ -34,7 +28,7 @@ export const userRouter = router({
                     .min(8, zodErrors.min('password', 8)),
             })
         )
-        .mutation(async ({ ctx, input }) => {
+        .mutation(async ({ ctx, input }): Promise<User | null> => {
             // * create stytch user account.
             const stytchResponse = await stytchClient.passwords
                 .create({ email: input.email, password: input.password })
@@ -57,6 +51,7 @@ export const userRouter = router({
                     // TODO: rollback stytch user account.
                     //await stytchClient.passwords.delete({ userId: res.user.user_id });
                     handleError(err);
+                    return null;
                 });
             console.log('USER CREATED!', user);
 
