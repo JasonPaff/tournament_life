@@ -52,7 +52,6 @@ export const userRouter = router({
                     // TODO: rollback stytch user account.
                     //await stytchClient.passwords.delete({ userId: res.user.user_id });
                     handleError(err);
-                    return null;
                 });
         }),
     updateUser: protectedProcedure
