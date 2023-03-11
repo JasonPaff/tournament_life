@@ -24,7 +24,9 @@ server.use(express.json());
 // Serve the React static files after build
 server.use(express.static('../client/dist'));
 
-server.listen(PORT, () => {});
+server.listen(PORT, () => {
+    console.log('server started');
+});
 
 // API endpoint
 server.use(
@@ -37,5 +39,6 @@ server.use(
 
 // All unmatched requests will return the React app
 server.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+    console.log('directory', __dirname);
+    res.sendFile(path.resolve(__dirname, 'index.html'));
 });
