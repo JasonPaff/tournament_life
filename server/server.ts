@@ -40,5 +40,5 @@ server.use(
 // All unmatched requests will return the React app
 server.get('/', (req, res) => {
     console.log('directory', __dirname);
-    res.sendFile(path.resolve(__dirname, 'index.html'));
+    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
 });
