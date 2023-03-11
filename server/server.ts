@@ -22,7 +22,7 @@ server.use(logger('dev', {}));
 server.use(express.json());
 
 // Serve the React static files after build
-//server.use(express.static(''));
+server.use(express.static('../client/dist'));
 
 server.listen(PORT, () => {
     console.log('server started');
@@ -39,6 +39,5 @@ server.use(
 
 // All unmatched requests will return the React app
 server.get('/', (req, res) => {
-    console.log('directory', __dirname);
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+    res.sendFile(path.resolve('/opt/render/project/src/', 'client', 'dist', 'index.html'));
 });
