@@ -22,7 +22,7 @@ server.use(logger('dev', {}));
 server.use(express.json());
 
 // Serve the React static files after build
-server.use(express.static('../client/dist'));
+//server.use(express.static(''));
 
 server.listen(PORT, () => {
     console.log('server started');
