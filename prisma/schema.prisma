@@ -4,9 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL")
-  url      = "postgres://nfpqbzew:JSzQl7hHrcZqn13Sm87B7XcVaJhp-NsK@isilo.db.elephantsql.com/nfpqbzew"
-  // url      = 'postgres://postgres:paffword@localhost:5432/tournament-life'
+  url      = env("DATABASE_URL")
 }
 
 model User {

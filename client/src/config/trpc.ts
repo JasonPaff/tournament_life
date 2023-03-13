@@ -13,8 +13,7 @@ export const trpc = createTRPCReact<AppRouter>();
 export const trpcClient = trpc.createClient({
     links: [
         httpBatchLink({
-           //url: 'http://localhost:5000/trpc',
-           url: 'https://tournament-life.onrender.com/trpc',
+           url: import.meta.env.VITE_REACT_APP_API,
         }),
     ],
 });
