@@ -39,7 +39,6 @@ export const userRouter = router({
                 .create({ email: input.email, password: input.password })
                 .catch(handleError);
             if (!stytchResponse) return null;
-            console.log('STYTCH USER CREATED!', stytchResponse);
 
             // * Create the user in the database.
             await ctx.prisma.user
@@ -52,7 +51,6 @@ export const userRouter = router({
                     },
                 })
                 .catch((err: unknown) => {
-                    console.log('PRISMA ERROR!', err);
                     // TODO: rollback stytch user account.
                     //await stytchClient.passwords.delete({ userId: res.user.user_id });
                     handleError(err);
