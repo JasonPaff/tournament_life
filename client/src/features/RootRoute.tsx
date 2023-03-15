@@ -1,12 +1,12 @@
 ﻿import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Link, Outlet } from '@tanstack/react-router';
 import { RootRoute } from '@tanstack/router';
-import React from "react";
+import React from 'react';
 
 export const rootRoute = new RootRoute({
     component: () => (
-        <div className={'flex min-h-screen flex-col items-center space-y-4'}>
+        <div className={'flex min-h-screen flex-col items-center space-y-4 bg-gray-100'}>
             <RouteTestBar />
             <hr />
             <Outlet /> {/* This is where child routes will render */}
@@ -18,7 +18,7 @@ export const rootRoute = new RootRoute({
 
 const RouteTestBar = () => {
     return (
-        <div className={'flex space-x-4 text-lg'}>
+        <div className={'flex space-x-4 text-lg text-gray-800'}>
             <Link activeProps={{ className: 'font-bold' }} to={'/dashboard'}>
                 Dashboard
             </Link>
