@@ -1,4 +1,4 @@
-import { FC, ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react';
+import type { FC, ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react';
 
 // Generic props and a children prop.
 export type PropsWithChildren<T = {}> = T & { children?: ReactNode };
@@ -16,8 +16,7 @@ export type FCCCN<T = {}> = FC<PropsWithChildrenClassName<T>>;
 
 // Functional component with generic props and a forwarded ref.
 export type FCFR<T = {}> = ForwardRefExoticComponent<T>;
-// Functional component with generic props, a children prop, and a forwarded ref.
-export type FCCFR<T = {}> = ForwardRefExoticComponent<T & PropsWithChildren<T>>;
+// Functional component with generic props, a children prop, and a forwarded ref.port type FCCFR<T = {}> = ForwardRefExoticComponent<T & PropsWithChildren<T>>;
 // Functional component with generic props, a classname prop, and a forwarded ref.
 export type FCCNFR<T = {}> = ForwardRefExoticComponent<T & PropsWithClassName<T>>;
 // Functional component with generic props, a children prop, a classname prop, and a forwarded ref.
