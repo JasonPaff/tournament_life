@@ -6,8 +6,21 @@ export const ColorMode = () => {
 
     return (
         <div>
-            {isDarkMode && <SunIcon className={'mt-1 h-7 w-7 text-yellow-400'} onClick={toggleColorMode} />}
-            {isLightMode && <MoonIcon className={'mt-1 h-7 w-7 text-gray-400'} onClick={toggleColorMode} />}
+            {/* LIGHT MODE */}
+            {isDarkMode && (
+                <SunIcon
+                    className={'mt-1 h-7 w-7 cursor-pointer text-yellow-400 hover:text-opacity-75'}
+                    onClick={toggleColorMode}
+                />
+            )}
+
+            {/* DARK MODE */}
+            {isLightMode && (
+                <MoonIcon
+                    className={'mt-1 h-7 w-7 cursor-pointer text-gray-400 hover:text-opacity-75'}
+                    onClick={toggleColorMode}
+                />
+            )}
         </div>
     );
 };

@@ -8,7 +8,7 @@ export const TailwindToaster = () => {
     const toastStyles: Record<ToastType, string> = {
         blank: '',
         custom: '',
-        error: 'bg-red-600 dark:bg-red-800 text-gray-200 dark:text-gray-800',
+        error: 'bg-red-600 text-gray-200',
         loading: '',
         success: 'bg-emerald-700 text-gray-200 dark:bg-emerald-800',
     };
@@ -19,14 +19,17 @@ export const TailwindToaster = () => {
             toastOptions={{
                 blank: {},
                 custom: {},
-                error: { duration: 5000, position: 'top-center' },
+                error: { duration: 3000, position: 'top-center' },
                 loading: {},
-                success: { duration: 3000, position: 'top-center' },
+                success: { duration: 3000, position: 'top-right' },
             }}
         >
             {(t) => (
                 <div
-                    className={clsx('flex flex-row items-center space-x-1 rounded p-2 shadow-lg', toastStyles[t.type])}
+                    className={clsx(
+                        'flex flex-row items-center space-x-1 rounded px-2 py-4 shadow-lg',
+                        toastStyles[t.type]
+                    )}
                 >
                     <span className={'font-medium'}>{resolveValue(t.message, t)}</span>
                     <button onClick={() => toast.remove(t.id)}>

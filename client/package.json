@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.15",
+    "@hookform/resolvers": "^2.9.11",
     "@prisma/client": "^4.10.1",
     "@radix-ui/react-form": "^0.0.2",
     "@stytch/react": "^0.9.0",
@@ -24,6 +25,7 @@
     "clsx": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.5",
     "react-hot-toast": "^2.4.0",
     "zod": "^3.20.6"
   },
@@ -41,7 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
-    "typescript": "^4.9.3",
+    "typescript": "^5.0.2",
     "vite": "^4.1.0"
   },
   "eslintConfig": {

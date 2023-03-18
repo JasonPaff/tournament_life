@@ -10,11 +10,12 @@ datasource db {
 model User {
   id           String       @id @default(uuid())
   createdAt    DateTime     @default(now())
-  displayName  String       @unique @db.VarChar(48)
-  email        String       @unique
   isActive     Boolean      @default(true)
   isArchived   Boolean      @default(false)
-  name         String?      @db.VarChar(48)
+  firstName    String       @db.VarChar(24)
+  lastName     String       @db.VarChar(24)
+  displayName  String       @unique @db.VarChar(48)
+  email        String       @unique
   role         Role         @default(USER)
   stytchUserId String       @unique
   updatedAt    DateTime?    @updatedAt

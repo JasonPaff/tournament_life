@@ -22,12 +22,13 @@ export const userRouter = router({
             z.object({
                 displayName: z
                     .string(zodErrors.string('display name', 'The display name for the user.'))
-                    .min(4, zodErrors.min('display name', 4)),
+                    .min(1, zodErrors.min('display name', 1)),
                 email: z
                     .string(zodErrors.string('email', 'The email address for the user.'))
                     .refine(zodHelpers.validateEmail, zodErrors.invalidEmail)
                     .transform(zodHelpers.normalizeEmail),
-                name: z.string(zodErrors.string('name', 'The full name for the user.')).nullish(),
+                firstName: z.string(zodErrors.string('first name', 'The first name of the user.')),
+                lastName: z.string(zodErrors.string('last name', 'The last name of the user.')),
                 password: z
                     .string(zodErrors.string('password', 'The password for the user.'))
                     .min(8, zodErrors.min('password', 8)),
@@ -44,9 +45,10 @@ export const userRouter = router({
             await ctx.prisma.user
                 .create({
                     data: {
+                        firstName: input.firstName,
+                        lastName: input.lastName,
                         displayName: input.displayName,
                         email: input.email,
-                        name: input.name,
                         stytchUserId: stytchResponse.user.user_id,
                     },
                 })
