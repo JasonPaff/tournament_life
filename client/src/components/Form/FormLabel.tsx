@@ -14,7 +14,7 @@ export const FormLabel: FCCFR<FormLabelProps> = forwardRef(
         return (
             <Label
                 className={clsx(
-                    'mb-1 block text-sm font-semibold text-gray-900 dark:text-gray-100',
+                    'mb-1 block text-sm font-semibold',
                     required && 'after:text-red-500 after:content-["*"] dark:after:text-red-400'
                 )}
                 ref={ref}

@@ -1,4 +1,4 @@
-﻿import { createContext, useEffect, useState } from 'react';
+﻿import { createContext, useEffect } from 'react';
 import { useToggle } from '../hooks';
 
 import type { FCC } from '../types';

@@ -1,5 +1,5 @@
-﻿import { FormError, FormInput, FormLabel } from '../../../components';
-import { Field, Message, Root, Submit } from '@radix-ui/react-form';
+﻿import { Field, Root, Submit } from '@radix-ui/react-form';
+import { FormInput, FormLabel } from '../../../components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToggle } from '../../../hooks';
@@ -11,16 +11,16 @@ import { z } from 'zod';
 export const Register = () => {
     const validationSchema = z
         .object({
-            firstName: z.string().min(1, 'First name is required'),
-            lastName: z.string().min(1, 'Last name is required'),
-            displayName: z.string().min(1, 'Display name is required'),
-            email: z.string().min(1, 'Email is required').email('Email is not valid'),
-            password: z.string().min(8, 'Password must be at least 8 characters'),
-            confirmPassword: z.string().min(1, 'Confirm password is required'),
+            firstName: z.string().min(1, 'A first name is required'),
+            lastName: z.string().min(1, 'A last name is required'),
+            displayName: z.string().min(1, 'A display name is required'),
+            email: z.string().min(1, 'An email address is required').email('Email is not valid'),
+            password: z.string().min(8, 'A password must be at least 8 characters'),
+            confirmPassword: z.string().min(1, 'A confirm password is required'),
         })
         .refine((data) => data.password === data.confirmPassword, {
             path: ['confirmPassword'],
-            message: 'Passwords do not match',
+            message: 'The passwords do not match',
         });
     type ValidationSchema = z.infer<typeof validationSchema>;
 
@@ -36,7 +36,7 @@ export const Register = () => {
     const { mutate: createUser } = trpc.user.createUser.useMutation({
         onMutate: setIsSaving.on,
         onSuccess: () => {
-            toast.success('Account created successfully!');
+            toast.success('Account was created successfully!');
             resetForm();
         },
         onSettled: setIsSaving.off,
@@ -79,7 +79,7 @@ export const Register = () => {
                             />
                         </Field>
 
-                        {/* EMAIL */}
+                        {/* EMAIL ADDRESS */}
                         <Field className={'col-span-2'} name={'email'}>
                             <FormLabel required>Email Address</FormLabel>
                             <FormInput

@@ -1,11 +1,13 @@
 import { protectedProcedure, publicProcedure, router, stytchClient } from '../config';
 import { handleError, zodErrors, zodHelpers } from '../utils';
-import { User } from '@prisma/client';
 import { z } from 'zod';
+
+import type { User } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 
 export const userRouter = router({
     getUser: protectedProcedure
-        .input(z.string(zodErrors.string('ID', 'The database id of the user.')))
+        .input(z.string(zodErrors.string('ID', 'The id for the user.')))
         .query(async ({ ctx, input }): Promise<User | null> => {
             let user: User | null = null;
             await ctx.prisma.user
@@ -35,6 +37,30 @@ export const userRouter = router({
             })
         )
         .mutation(async ({ ctx, input }) => {
+            // * Check for existing email or duplicate display name.
+            const existingUser = await ctx.prisma.user.findFirst({
+                where: {
+                    OR: [
+                        { email: { equals: input.email, mode: 'insensitive' } },
+                        { displayName: { equals: input.displayName, mode: 'insensitive' } },
+                    ],
+                },
+            });
+
+            // * Return an error if the email or display name already exists.
+            if (existingUser) {
+                if (zodHelpers.lowercase(existingUser.email) === zodHelpers.lowercase(input.email))
+                    throw new TRPCError({
+                        code: 'BAD_REQUEST',
+                        message: 'A user with that email address already exists',
+                    });
+                else if (zodHelpers.lowercase(existingUser.displayName) === zodHelpers.lowercase(input.displayName))
+                    throw new TRPCError({
+                        code: 'BAD_REQUEST',
+                        message: 'A user with that display name already exists',
+                    });
+            }
+
             // * create stytch user account.
             const stytchResponse = await stytchClient.passwords
                 .create({ email: input.email, password: input.password })

@@ -42,7 +42,7 @@ export const zodErrors = {
 };
 
 export const zodHelpers = {
-    lowercase: (string: string) => string.toLowerCase(),
-    normalizeEmail: (email: string) => validator.normalizeEmail(email) || email,
-    validateEmail: (email: string) => validator.isEmail(email),
+    lowercase: (string: string = '') => string.toLowerCase(),
+    normalizeEmail: (email: string = '') => validator.normalizeEmail(email) || email,
+    validateEmail: (email: string = '') => validator.isEmail(email),
 };

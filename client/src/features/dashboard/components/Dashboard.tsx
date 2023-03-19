@@ -1,8 +1,7 @@
 ﻿import { trpc } from '../../../config';
-import React from 'react';
 
 export const Dashboard = () => {
-    const { data: user, isLoading, isError } = trpc.user.getUser.useQuery('clc49kkv10000jppk1wl2sz33');
+    const { data: user, isLoading, isError } = trpc.user.getUser.useQuery('ddc945fc-2392-47e7-8586-eadf75de8839');
 
     if (isLoading) return <div className={'animate-pulse text-4xl'}>Loading...</div>;
 
@@ -11,7 +10,7 @@ export const Dashboard = () => {
     return (
         <div className={'grid grid-cols-2 gap-y-1'}>
             <span className={'font-mediums'}>Name:</span>
-            <span>{user?.name}</span>
+            <span>{`${user?.firstName} ${user?.lastName}`}</span>
             <span className={'font-mediums'}>Display Name:</span>
             <span>{user?.displayName}</span>
             <span className={'font-mediums'}>Email:</span>
