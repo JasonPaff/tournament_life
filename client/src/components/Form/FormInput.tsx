@@ -1,5 +1,4 @@
 ﻿import { EyeIcon, EyeSlashIcon, XMarkIcon } from '@heroicons/react/24/solid';
-import { FormErrorMessage } from './FormErrorMessage';
 import { useFormContext } from 'react-hook-form';
 import { Control } from '@radix-ui/react-form';
 import { useToggle } from '../../hooks';
@@ -93,7 +92,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
                     </div>
 
                     {/* ERROR MESSAGE */}
-                    <FormErrorMessage>{errorMessage}</FormErrorMessage>
+                    <div className={'text-sm font-medium text-red-500 dark:text-red-400'}>{errorMessage}</div>
                 </>
             </Control>
         );
