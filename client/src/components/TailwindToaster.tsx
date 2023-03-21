@@ -1,6 +1,6 @@
 import { CheckIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import toast, { resolveValue, Toaster } from 'react-hot-toast';
-import { CrossIcon } from './CrossIcon';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 
 import type { ToastType } from 'react-hot-toast';
@@ -54,7 +54,7 @@ export const TailwindToaster = () => {
 
                             {/* CLOSE BUTTON */}
                             <button onClick={() => toast.remove(t.id)}>
-                                <CrossIcon className={'h-6 w-6 hover:scale-110 hover:text-gray-300 active:scale-95'} />
+                                <XMarkIcon className={'h-6 w-6 hover:scale-110 hover:text-gray-300 active:scale-95'} />
                             </button>
                         </div>
 
