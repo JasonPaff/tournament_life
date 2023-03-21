@@ -53,7 +53,7 @@ export const Register = () => {
     const { handleSubmit, reset } = formMethods;
 
     // Focus first name input on mount
-    useEffect(() => firstNameRef.current?.focus(), []);
+    useEffect(() => firstNameRef?.current?.focus(), []);
 
     // Create user on valid submission
     const onSubmit = async (data: ValidationSchema) => createUser(data);
@@ -138,9 +138,11 @@ export const Register = () => {
                         </div>
 
                         {/* SUBMIT */}
-                        <Button isBusy={isSaving} type={'submit'}>
-                            Sign Up Today
-                        </Button>
+                        <div className={'mt-6'}>
+                            <Button isBusy={isSaving} options={{ isDisabled: isSaving, type: 'submit' }}>
+                                Sign Up Today
+                            </Button>
+                        </div>
                     </form>
                 </FormProvider>
                 <DevTool control={formMethods.control} />

@@ -16,6 +16,9 @@ interface FormInputProps {
 
 type FormInputHandle = Pick<HTMLInputElement, 'focus' | 'scrollIntoView'>;
 
+// TODO: make icons into icon buttons and handle keyboard focus
+// TODO: Make error focus show a red border around the input
+
 const FormInput = forwardRef<FormInputHandle, FormInputProps>(
     ({ label, name, options = {}, type = 'text' }, forwardedRef) => {
         const inputRef = useRef<HTMLInputElement | null>(null);
@@ -83,8 +86,8 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(
                 <div className={'relative'}>
                     <input
                         className={clsx(
-                            'block w-full appearance-none rounded-md border bg-white py-2 px-2 outline-none dark:bg-gray-800',
-                            'focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300 dark:focus:border-cyan-500 dark:focus:ring-cyan-500',
+                            'block w-full rounded-md border py-1.5 shadow-sm focus:ring-inset',
+                            'placeholder:text-gray-400 focus:ring-2 dark:bg-gray-800 sm:text-sm sm:leading-6',
                             options?.disabled && 'cursor-not-allowed',
                             isInvalid ? 'border-red-500' : 'border-gray-200 dark:border-gray-600'
                         )}
@@ -95,7 +98,7 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(
                     />
 
                     {/* ICON BUTTONS */}
-                    <div className={'absolute top-3 right-2 flex space-x-2'}>
+                    <div className={'absolute top-2.5 right-2 flex space-x-2'}>
                         {/* SHOW PASSWORD */}
                         {isShowingPassword && (
                             <EyeIcon

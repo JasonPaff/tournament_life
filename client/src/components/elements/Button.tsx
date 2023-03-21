@@ -1,33 +1,64 @@
-import { forwardRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useButton } from 'react-aria';
 import clsx from 'clsx';
 
-import type { ForwardedRef } from 'react';
-import type { FCC } from '../../types';
+import type { AriaButtonProps } from 'react-aria';
+import type { PropsWithChildren } from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends PropsWithChildren {
     isBusy?: boolean;
-    type?: 'submit' | 'reset' | 'button';
+    options?: AriaButtonProps;
 }
 
-const Button: FCC<ButtonProps> = forwardRef(
-    ({ children, isBusy, type = 'button' }, ref: ForwardedRef<HTMLButtonElement>) => {
-        return (
-            <button
-                className={clsx(
-                    'relative mt-8 inline-flex w-full justify-center overflow-hidden rounded-md bg-cyan-500 py-2 px-3 dark:bg-cyan-700',
-                    'text-sm font-semibold text-white outline-2 outline-offset-2 transition-colors',
-                    'before:absolute before:inset-0 before:transition-colors hover:before:bg-white/10',
-                    'active:bg-cyan-600 active:text-white/80 active:before:bg-transparent'
-                )}
-                disabled={isBusy}
-                ref={ref}
-                type={type}
-            >
-                {children}
-            </button>
-        );
-    }
-);
+type ButtonHandle = Pick<HTMLButtonElement, 'focus' | 'scrollIntoView'>;
+
+const Button = forwardRef<ButtonHandle, ButtonProps>(({ children, isBusy, options = {} }, forwardedRef) => {
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+    const { buttonProps } = useButton(options, buttonRef);
+
+    useImperativeHandle(
+        forwardedRef,
+        () => {
+            return {
+                focus: (options?: FocusOptions) => {
+                    buttonRef.current?.focus(options);
+                },
+                scrollIntoView: (arg?: boolean | ScrollIntoViewOptions) => {
+                    buttonRef.current?.scrollIntoView(arg);
+                },
+            };
+        },
+        [buttonRef, forwardedRef]
+    );
+
+    return (
+        <button
+            {...buttonProps}
+            className={clsx(
+                'inline-flex w-full justify-center rounded-md bg-indigo-500 py-2.5 px-3.5 text-sm font-semibold text-white shadow-sm',
+                'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500',
+                isBusy && 'cursor-wait',
+                options?.isDisabled ? 'cursor-not-allowed' : 'hover:bg-indigo-400'
+            )}
+        >
+            {children}
+
+            {/* LOADING SPINNER */}
+            {isBusy && (
+                <div
+                    className={clsx(
+                        'ml-1 mt-0.5 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent',
+                        'text-neutral-100 motion-reduce:animate-[spin_1.5s_linear_infinite]'
+                    )}
+                    role={'status'}
+                >
+                    <span className={'sr-only'}>Loading...</span>
+                </div>
+            )}
+        </button>
+    );
+});
 
 Button.displayName = 'Button';
 
