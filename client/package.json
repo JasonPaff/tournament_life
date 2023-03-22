@@ -12,8 +12,6 @@
     "@heroicons/react": "^2.0.15",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^2.9.11",
-    "@prisma/client": "^4.10.1",
-    "@radix-ui/react-form": "^0.0.2",
     "@stytch/react": "^0.9.0",
     "@stytch/vanilla-js": "^0.9.3",
     "@tanstack/react-query": "^4.24.4",
