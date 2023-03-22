@@ -1,11 +1,25 @@
 import { protectedProcedure, publicProcedure, router, stytchClient } from '../config';
 import { handleError, zodErrors, zodHelpers } from '../utils';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import type { User } from '@prisma/client';
-import { TRPCError } from '@trpc/server';
 
 export const userRouter = router({
+    verifyDisplayName: publicProcedure
+        .input(
+            z.object({
+                displayName: z
+                    .string(zodErrors.string('display name', 'The display name for the user.'))
+                    .min(4, zodErrors.min('display name', 4)),
+            })
+        )
+        .query(async ({ ctx, input }): Promise<boolean> => {
+            const user = await ctx.prisma.user.findFirst({
+                where: { displayName: { equals: input.displayName, mode: 'insensitive' } },
+            });
+            return !user;
+        }),
     getUser: protectedProcedure
         .input(z.string(zodErrors.string('ID', 'The id for the user.')))
         .query(async ({ ctx, input }): Promise<User | null> => {
@@ -24,7 +38,7 @@ export const userRouter = router({
             z.object({
                 displayName: z
                     .string(zodErrors.string('display name', 'The display name for the user.'))
-                    .min(1, zodErrors.min('display name', 1)),
+                    .min(4, zodErrors.min('display name', 4)),
                 email: z
                     .string(zodErrors.string('email', 'The email address for the user.'))
                     .refine(zodHelpers.validateEmail, zodErrors.invalidEmail)

@@ -37,7 +37,7 @@ export const Register = () => {
         resolver: zodResolver(validationSchema),
     });
 
-    const { mutate: createUser, isLoading } = trpc.user.createUser.useMutation({
+    const { mutate: createUser, isLoading: isCreatingUser } = trpc.user.createUser.useMutation({
         onSuccess: () => {
             // TODO: automatically log the user in after registration
             toast.success('Account was created successfully!');
@@ -52,6 +52,10 @@ export const Register = () => {
 
     const onSubmit = async (data: ValidationSchema) => createUser(data);
 
+    const onDisplayNameBlur = () => {
+        console.log('blur');
+    };
+
     return (
         <div className={'sm:py:10 w-full max-w-2xl rounded-lg bg-white p-4 dark:bg-gray-800 sm:px-10'}>
             <section>
@@ -64,7 +68,7 @@ export const Register = () => {
                                 label={'First Name'}
                                 options={{
                                     name: 'firstName',
-                                    readOnly: isLoading,
+                                    readOnly: isCreatingUser,
                                     required: true,
                                 }}
                                 ref={firstNameRef}
@@ -75,7 +79,7 @@ export const Register = () => {
                                 label={'Last Name'}
                                 options={{
                                     name: 'lastName',
-                                    readOnly: isLoading,
+                                    readOnly: isCreatingUser,
                                     required: true,
                                 }}
                             />
@@ -86,7 +90,8 @@ export const Register = () => {
                                     label={'Display Name'}
                                     options={{
                                         name: 'displayName',
-                                        readOnly: isLoading,
+                                        onBlur: onDisplayNameBlur,
+                                        readOnly: isCreatingUser,
                                         required: true,
                                     }}
                                 />
@@ -98,7 +103,7 @@ export const Register = () => {
                                     label={'Email Address'}
                                     options={{
                                         name: 'email',
-                                        readOnly: isLoading,
+                                        readOnly: isCreatingUser,
                                         required: true,
                                         type: 'email',
                                     }}
@@ -110,7 +115,7 @@ export const Register = () => {
                                 label={'Password'}
                                 options={{
                                     name: 'password',
-                                    readOnly: isLoading,
+                                    readOnly: isCreatingUser,
                                     required: true,
                                     type: 'password',
                                 }}
@@ -121,7 +126,7 @@ export const Register = () => {
                                 label={'Confirm Password'}
                                 options={{
                                     name: 'confirmPassword',
-                                    readOnly: isLoading,
+                                    readOnly: isCreatingUser,
                                     required: true,
                                     type: 'password',
                                 }}
@@ -130,7 +135,7 @@ export const Register = () => {
 
                         {/* SUBMIT */}
                         <div className={'mt-6'}>
-                            <Button isBusy={isLoading} options={{ isDisabled: isLoading, type: 'submit' }}>
+                            <Button isBusy={isCreatingUser} options={{ isDisabled: isCreatingUser, type: 'submit' }}>
                                 Sign Up Today
                             </Button>
                         </div>
