@@ -5,14 +5,16 @@ import clsx from 'clsx';
 import type { AriaButtonProps } from 'react-aria';
 import type { PropsWithChildren } from 'react';
 
+type ButtonHandle = Pick<HTMLButtonElement, 'focus' | 'scrollIntoView'>;
+type Size = 'none' | 'sm' | 'md' | 'lg' | 'xl';
+type Variant = 'icon' | 'primary' | 'secondary' | 'destructive' | 'ghost' | 'outline' | 'link';
+
 interface ButtonProps extends PropsWithChildren {
     isBusy?: boolean;
     options?: AriaButtonProps<'button'>;
-    size?: 'sm' | 'md';
-    variant?: 'icon' | 'primary' | 'secondary';
+    size?: Size;
+    variant?: Variant;
 }
-
-type ButtonHandle = Pick<HTMLButtonElement, 'focus' | 'scrollIntoView'>;
 
 const Button = forwardRef<ButtonHandle, ButtonProps>(
     ({ children, isBusy, options = {}, size = 'md', variant = 'primary' }, forwardedRef) => {
@@ -37,14 +39,22 @@ const Button = forwardRef<ButtonHandle, ButtonProps>(
             [buttonRef, forwardedRef]
         );
 
-        const variants: Record<string, string> = {
-            icon: '',
-            primary: clsx('bg-indigo-500 text-white shadow-sm', isDisabled ? 'bg-opacity-50' : 'hover-bg-indigo-400'),
-        };
-
-        const sizes: Record<string, string> = {
+        const sizes: Record<Size, string> = {
+            none: '',
             sm: 'py-1.5 px-2.5 text-xs',
             md: 'py-2.5 px-3.5 text-sm',
+            lg: '',
+            xl: '',
+        };
+
+        const variants: Record<Variant, string> = {
+            destructive: '',
+            ghost: '',
+            icon: '',
+            link: '',
+            outline: '',
+            primary: clsx('bg-indigo-500 text-white shadow-sm', isDisabled ? 'bg-opacity-50' : 'hover-bg-indigo-400'),
+            secondary: '',
         };
 
         return (
@@ -56,7 +66,7 @@ const Button = forwardRef<ButtonHandle, ButtonProps>(
                     isBusy && 'cursor-wait',
                     isDisabled && 'cursor-not-allowed',
                     variants[variant],
-                    variant !== 'icon' && sizes[size]
+                    sizes[size]
                 )}
             >
                 {children}

@@ -10,12 +10,12 @@ import { z } from 'zod';
 export const Register = () => {
     const validationSchema = z
         .object({
-            firstName: z.string().min(1, 'A first name is required'),
-            lastName: z.string().min(1, 'A last name is required'),
-            displayName: z.string().min(1, 'A display name is required'),
-            email: z.string().min(1, 'An email address is required').email('Email address is not valid'),
-            password: z.string().min(8, 'A password must be at least 8 characters'),
-            confirmPassword: z.string().min(1, 'A confirm password is required'),
+            firstName: z.string().min(1, 'First name is required'),
+            lastName: z.string().min(1, 'Last name is required'),
+            displayName: z.string().min(1, 'Display name is required'),
+            email: z.string().min(1, 'Email address is required').email('Email address is not valid'),
+            password: z.string().min(8, 'Password must be at least 8 characters'),
+            confirmPassword: z.string().min(1, 'Confirm password is required'),
         })
         .refine((data) => data.password === data.confirmPassword, {
             path: ['confirmPassword'],
@@ -53,8 +53,9 @@ export const Register = () => {
     const onSubmit = async (data: ValidationSchema) => createUser(data);
 
     return (
-        <div className={'rounded-lg bg-white p-4 dark:bg-gray-800 sm:p-24'}>
+        <div className={'sm:py:10 w-full max-w-2xl rounded-lg bg-white p-4 dark:bg-gray-800 sm:px-10'}>
             <section>
+                <h1 className={'mb-4 text-center text-3xl'}>Create a new account</h1>
                 <FormProvider {...formMethods}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className={'grid grid-cols-2 gap-4'}>

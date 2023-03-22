@@ -3,23 +3,20 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { ErrorMessage } from '@hookform/error-message';
 import { useFormContext } from 'react-hook-form';
 import { useToggle } from '../../hooks';
+import { Button } from './Button';
 import clsx from 'clsx';
 
 import type { RegisterOptions } from 'react-hook-form';
 import type { InputHTMLAttributes } from 'react';
-import { Button } from './Button';
 
+type InputOptions = InputHTMLAttributes<HTMLInputElement> & RegisterOptions & RequiredOptions;
 type RequiredOptions = Required<Pick<InputHTMLAttributes<HTMLInputElement>, 'name'>>;
-type OptionsType = InputHTMLAttributes<HTMLInputElement> & RegisterOptions & RequiredOptions;
 type FormInputHandle = Pick<HTMLInputElement, 'focus' | 'scrollIntoView'>;
 
 interface FormInputProps {
     label: string;
-    options: OptionsType;
+    options: InputOptions;
 }
-
-// TODO: make icons into icon buttons and handle keyboard focus
-// TODO: Make error focus show a red border around the input
 
 const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options }, forwardedRef) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -42,6 +39,7 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
 
     const errorMessage = errors[name]?.message;
     const isInvalid = errorMessage !== undefined;
+    const isDisabled = disabled || readOnly;
 
     const isPasswordInput = type === 'password';
     const isShowingPassword = isPasswordInput && isPasswordVisible && inputValue;
@@ -104,9 +102,10 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
             <div className={'relative'}>
                 <input
                     className={clsx(
-                        'block w-full rounded-md border py-1.5 shadow-sm focus:ring-inset focus:ring-indigo-500 ',
-                        'placeholder:text-gray-400 focus:ring-2 dark:bg-gray-800 sm:text-sm sm:leading-6',
-                        (disabled || readOnly) && 'cursor-not-allowed',
+                        'block w-full rounded-md border py-1.5 shadow-sm outline-none',
+                        'placeholder:text-gray-400 dark:bg-gray-800 sm:text-sm sm:leading-6',
+                        !isDisabled && 'focus:ring-2 focus:ring-inset focus:ring-indigo-500',
+                        isDisabled && 'cursor-not-allowed text-gray-400 focus:ring-0',
                         isInvalid ? 'border-red-500' : 'border-gray-200 dark:border-gray-600'
                     )}
                     {...inputOptions}
@@ -114,26 +113,30 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
 
                 <div className={'absolute top-2.5 right-2 flex space-x-2'}>
                     {/* SHOW/HIDE PASSWORD */}
-                    {isPasswordInput && (
+                    {isPasswordInput && inputValue && (
                         <Button
-                            options={{ onPress: onShowHidePassword }}
+                            options={{ isDisabled: isDisabled, onPress: onShowHidePassword }}
                             ref={passwordRef}
-                            size={'sm'}
+                            size={'none'}
                             variant={'icon'}
                         >
                             {isHidingPassword && (
                                 <EyeSlashIcon
                                     className={clsx(
-                                        'h-5 w-5 cursor-pointer hover:scale-110 active:scale-95',
-                                        'text-stone-800 hover:text-opacity-50 dark:text-stone-200 hover:dark:text-opacity-50'
+                                        'h-5 w-5',
+                                        isDisabled
+                                            ? 'cursor-not-allowed text-stone-400 dark:text-stone-400'
+                                            : 'cursor-pointer hover:scale-110 hover:text-opacity-50 active:scale-95 hover:dark:text-opacity-50'
                                     )}
                                 />
                             )}
                             {isShowingPassword && (
                                 <EyeIcon
                                     className={clsx(
-                                        'h-5 w-5 cursor-pointer hover:scale-110 active:scale-95',
-                                        'text-stone-800 hover:text-opacity-50 dark:text-stone-200 hover:dark:text-opacity-50'
+                                        'h-5 w-5',
+                                        isDisabled
+                                            ? 'cursor-not-allowed text-stone-400 dark:text-stone-400'
+                                            : 'cursor-pointer hover:scale-110 hover:text-opacity-50 active:scale-95 hover:dark:text-opacity-50'
                                     )}
                                 />
                             )}
@@ -142,11 +145,13 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
 
                     {/* CLEAR INPUT */}
                     {inputValue && (
-                        <Button options={{ onPress: onClear }} size={'sm'} variant={'icon'}>
+                        <Button options={{ isDisabled: isDisabled, onPress: onClear }} size={'none'} variant={'icon'}>
                             <XMarkIcon
                                 className={clsx(
-                                    'h-5 w-5 cursor-pointer hover:scale-110 active:scale-95',
-                                    'text-stone-800 hover:text-opacity-50 dark:text-stone-200 hover:dark:text-opacity-50'
+                                    'h-5 w-5',
+                                    isDisabled
+                                        ? 'cursor-not-allowed text-stone-400 dark:text-stone-400'
+                                        : 'cursor-pointer hover:scale-110 hover:text-opacity-50 active:scale-95 hover:dark:text-opacity-50'
                                 )}
                             />
                         </Button>
