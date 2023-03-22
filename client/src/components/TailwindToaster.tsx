@@ -19,7 +19,7 @@ export const TailwindToaster = () => {
             toastOptions={{
                 blank: {},
                 custom: {},
-                error: {
+                inputError: {
                     ariaProps: { role: 'alert', 'aria-live': 'polite' },
                     duration: 3500,
                     position: 'top-center',

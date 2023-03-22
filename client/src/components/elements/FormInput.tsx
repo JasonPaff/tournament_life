@@ -61,13 +61,13 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
     );
 
     const onClear = () => {
-        if (disabled || readOnly) return;
+        if (isDisabled) return;
         resetField(name);
         inputRef.current?.focus();
     };
 
     const onShowHidePassword = () => {
-        if (disabled || readOnly) return;
+        if (isDisabled) return;
         setIsPasswordVisible.toggle();
         passwordRef.current?.focus();
     };
@@ -85,16 +85,24 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
         type: isPasswordVisible ? 'text' : type ?? 'text',
     };
 
+    const styles = {
+        input: 'block w-full rounded-md border py-1.5 shadow-sm outline-none placeholder:text-gray-400 dark:bg-gray-800 sm:text-sm sm:leading-6',
+        inputDisabled: 'cursor-not-allowed text-gray-400 focus:ring-0',
+        inputEnabled: 'focus:ring-2 focus:ring-inset focus:ring-indigo-500',
+        inputError: 'text-sm font-medium text-red-500 dark:text-red-400',
+        inputInvalid: 'border-red-500',
+        inputValid: 'border-gray-200 dark:border-gray-600',
+        icon: 'h-5 w-5',
+        iconDisabled: 'cursor-not-allowed text-stone-400 dark:text-stone-400',
+        iconEnabled: 'cursor-pointer hover:scale-110 hover:text-opacity-50 active:scale-95 hover:dark:text-opacity-50',
+        label: 'mb-1.5 block text-sm font-semibold',
+        labelRequired: 'after:text-2xl after:text-red-500 after:content-["*"] dark:after:text-red-400',
+    };
+
     return (
         <div>
             {/* LABEL */}
-            <label
-                className={clsx(
-                    'mb-1.5 block text-sm font-semibold',
-                    required && 'after:text-2xl after:text-red-500 after:content-["*"] dark:after:text-red-400'
-                )}
-                htmlFor={name}
-            >
+            <label className={clsx(styles.label, required && styles.labelRequired)} htmlFor={name}>
                 {label}
             </label>
 
@@ -102,11 +110,9 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
             <div className={'relative'}>
                 <input
                     className={clsx(
-                        'block w-full rounded-md border py-1.5 shadow-sm outline-none',
-                        'placeholder:text-gray-400 dark:bg-gray-800 sm:text-sm sm:leading-6',
-                        !isDisabled && 'focus:ring-2 focus:ring-inset focus:ring-indigo-500',
-                        isDisabled && 'cursor-not-allowed text-gray-400 focus:ring-0',
-                        isInvalid ? 'border-red-500' : 'border-gray-200 dark:border-gray-600'
+                        styles.input,
+                        disabled ? styles.inputDisabled : styles.inputEnabled,
+                        isInvalid ? styles.inputInvalid : styles.inputValid
                     )}
                     {...inputOptions}
                 />
@@ -122,22 +128,12 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
                         >
                             {isHidingPassword && (
                                 <EyeSlashIcon
-                                    className={clsx(
-                                        'h-5 w-5',
-                                        isDisabled
-                                            ? 'cursor-not-allowed text-stone-400 dark:text-stone-400'
-                                            : 'cursor-pointer hover:scale-110 hover:text-opacity-50 active:scale-95 hover:dark:text-opacity-50'
-                                    )}
+                                    className={clsx(styles.icon, isDisabled ? styles.iconDisabled : styles.iconEnabled)}
                                 />
                             )}
                             {isShowingPassword && (
                                 <EyeIcon
-                                    className={clsx(
-                                        'h-5 w-5',
-                                        isDisabled
-                                            ? 'cursor-not-allowed text-stone-400 dark:text-stone-400'
-                                            : 'cursor-pointer hover:scale-110 hover:text-opacity-50 active:scale-95 hover:dark:text-opacity-50'
-                                    )}
+                                    className={clsx(styles.icon, isDisabled ? styles.iconDisabled : styles.iconEnabled)}
                                 />
                             )}
                         </Button>
@@ -147,12 +143,7 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
                     {inputValue && (
                         <Button options={{ isDisabled: isDisabled, onPress: onClear }} size={'none'} variant={'icon'}>
                             <XMarkIcon
-                                className={clsx(
-                                    'h-5 w-5',
-                                    isDisabled
-                                        ? 'cursor-not-allowed text-stone-400 dark:text-stone-400'
-                                        : 'cursor-pointer hover:scale-110 hover:text-opacity-50 active:scale-95 hover:dark:text-opacity-50'
-                                )}
+                                className={clsx(styles.icon, isDisabled ? styles.iconDisabled : styles.iconEnabled)}
                             />
                         </Button>
                     )}
@@ -163,9 +154,7 @@ const FormInput = forwardRef<FormInputHandle, FormInputProps>(({ label, options 
             <ErrorMessage
                 errors={errors}
                 name={name}
-                render={({ message }) => (
-                    <p className={'text-sm font-medium text-red-500 dark:text-red-400'}>{message}</p>
-                )}
+                render={({ message }) => <p className={styles.inputError}>{message}</p>}
             />
         </div>
     );
