@@ -1,7 +1,7 @@
 ﻿import { trpc } from '../../../config';
 
 export const Dashboard = () => {
-    const { data: user, isLoading, isError } = trpc.user.getUser.useQuery('ddc945fc-2392-47e7-8586-eadf75de8839');
+    const { data: user, isLoading, isError } = trpc.user.getUser.useQuery('a0a889d0-ebb0-4a76-a05a-6176c61a5191');
 
     if (isLoading) return <div className={'animate-pulse text-4xl'}>Loading...</div>;
 
