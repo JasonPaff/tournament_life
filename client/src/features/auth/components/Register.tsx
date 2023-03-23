@@ -88,17 +88,17 @@ export const Register = () => {
     );
 
     // Verify password strength query
-    const {
-        refetch: verifyPassword,
-        isFetching: isValidatingPassword,
-        isRefetching: isReValidatingPassword,
-    } = trpc.user.passwordStrength.useQuery(
-        {
-            email: formMethods.getValues('email'),
-            password: formMethods.getValues('password'),
-        },
-        { enabled: false }
-    );
+    // const {
+    //     refetch: verifyPassword,
+    //     isFetching: isValidatingPassword,
+    //     isRefetching: isReValidatingPassword,
+    // } = trpc.user.passwordStrength.useQuery(
+    //     {
+    //         email: formMethods.getValues('email'),
+    //         password: formMethods.getValues('password'),
+    //     },
+    //     { enabled: false }
+    // );
 
     // Focus first name input on mount
     useEffect(() => firstNameRef?.current?.focus(), []);
