@@ -9,7 +9,7 @@ export const TailwindToaster = () => {
     const toastStyles: Record<ToastType, string> = {
         blank: '',
         custom: '',
-        error: 'bg-slate-600 dark:bg-slate-700 text-gray-200',
+        error: 'bg-red-600 dark:bg-red-600 text-gray-200',
         loading: '',
         success: 'bg-emerald-700 text-gray-200 dark:bg-emerald-800',
     };
@@ -19,7 +19,7 @@ export const TailwindToaster = () => {
             toastOptions={{
                 blank: {},
                 custom: {},
-                inputError: {
+                error: {
                     ariaProps: { role: 'alert', 'aria-live': 'polite' },
                     duration: 3500,
                     position: 'top-center',
@@ -47,7 +47,7 @@ export const TailwindToaster = () => {
                     <div className={'flex flex-col'}>
                         <div className={'flex items-baseline justify-between'}>
                             {/* ERROR TITLE */}
-                            {t.type === 'error' && <span className={'text-red-500'}>{'ERROR'}</span>}
+                            {t.type === 'error' && <span className={'text-gray-200'}>{'ERROR'}</span>}
 
                             {/* SUCCESS TITLE */}
                             {t.type === 'success' && <span className={'text-green-500'}>{'SUCCESS'}</span>}

@@ -6,8 +6,9 @@ import type { AriaButtonProps } from 'react-aria';
 import type { PropsWithChildren } from 'react';
 
 type ButtonHandle = Pick<HTMLButtonElement, 'focus' | 'scrollIntoView'>;
-type Size = 'none' | 'sm' | 'md' | 'lg' | 'xl';
+
 type Variant = 'icon' | 'primary' | 'secondary' | 'destructive' | 'ghost' | 'outline' | 'link';
+type Size = 'none' | 'sm' | 'md' | 'lg' | 'xl';
 
 interface ButtonProps extends PropsWithChildren {
     isBusy?: boolean;
@@ -53,7 +54,10 @@ const Button = forwardRef<ButtonHandle, ButtonProps>(
             icon: '',
             link: '',
             outline: '',
-            primary: clsx('bg-indigo-500 text-white shadow-sm', isDisabled ? 'bg-opacity-50' : 'hover-bg-indigo-400'),
+            primary: clsx(
+                'bg-indigo-500 text-white shadow-sm',
+                isDisabled ? 'bg-opacity-50 text-opacity-75 dark:text-opacity-50' : 'hover-bg-indigo-400'
+            ),
             secondary: '',
         };
 

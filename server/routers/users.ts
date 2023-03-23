@@ -4,6 +4,7 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import type { User } from '@prisma/client';
+import { StrengthCheckResponse } from 'stytch/types/lib/passwords';
 
 export const userRouter = router({
     verifyDisplayName: publicProcedure
@@ -14,11 +15,42 @@ export const userRouter = router({
                     .min(4, zodErrors.min('display name', 4)),
             })
         )
-        .query(async ({ ctx, input }): Promise<boolean> => {
+        .query(async ({ ctx, input }) => {
             const user = await ctx.prisma.user.findFirst({
                 where: { displayName: { equals: input.displayName, mode: 'insensitive' } },
             });
-            return !user;
+            return { isDisplayNameValid: !user };
+        }),
+    verifyEmailAddress: publicProcedure
+        .input(
+            z.object({
+                email: z
+                    .string(zodErrors.string('email', 'The email address for the user.'))
+                    .min(4, zodErrors.min('email address', 4)),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const user = await ctx.prisma.user.findFirst({
+                where: { email: { equals: input.email, mode: 'insensitive' } },
+            });
+            return { isEmailAddressValid: !user };
+        }),
+    passwordStrength: publicProcedure
+        .input(
+            z.object({
+                email: z.string().email().optional(),
+                password: z
+                    .string(zodErrors.string('password', 'The password for the user.'))
+                    .min(8, zodErrors.min('password', 8)),
+            })
+        )
+        .query(async ({ ctx, input }): Promise<StrengthCheckResponse | null> => {
+            let strengthResponse: StrengthCheckResponse | null = null;
+            await stytchClient.passwords
+                .strengthCheck({ email: input.email, password: input.password })
+                .then((response) => (strengthResponse = response))
+                .catch(handleError);
+            return strengthResponse;
         }),
     getUser: protectedProcedure
         .input(z.string(zodErrors.string('ID', 'The id for the user.')))
