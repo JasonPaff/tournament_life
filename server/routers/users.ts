@@ -35,23 +35,23 @@ export const userRouter = router({
             });
             return { isEmailAddressValid: !user };
         }),
-    passwordStrength: publicProcedure
-        .input(
-            z.object({
-                email: z.string().email().optional(),
-                password: z
-                    .string(zodErrors.string('password', 'The password for the user.'))
-                    .min(8, zodErrors.min('password', 8)),
-            })
-        )
-        .query(async ({ ctx, input }): Promise<StrengthCheckResponse | null> => {
-            let strengthResponse: StrengthCheckResponse | null = null;
-            await stytchClient.passwords
-                .strengthCheck({ email: input.email, password: input.password })
-                .then((response) => (strengthResponse = response))
-                .catch(handleError);
-            return strengthResponse;
-        }),
+    // passwordStrength: publicProcedure
+    //     .input(
+    //         z.object({
+    //             email: z.string().email().optional(),
+    //             password: z
+    //                 .string(zodErrors.string('password', 'The password for the user.'))
+    //                 .min(8, zodErrors.min('password', 8)),
+    //         })
+    //     )
+    //     .query(async ({ ctx, input }): Promise<StrengthCheckResponse | null> => {
+    //         let strengthResponse: StrengthCheckResponse | null = null;
+    //         await stytchClient.passwords
+    //             .strengthCheck({ email: input.email, password: input.password })
+    //             .then((response) => (strengthResponse = response))
+    //             .catch(handleError);
+    //         return strengthResponse;
+    //     }),
     getUser: protectedProcedure
         .input(z.string(zodErrors.string('ID', 'The id for the user.')))
         .query(async ({ ctx, input }): Promise<User | null> => {
