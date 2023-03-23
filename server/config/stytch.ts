@@ -9,7 +9,6 @@ const agent = new https.Agent({
 export const stytchClient = new stytch.Client({
     project_id: process.env.STYTCH_PROJECT_ID,
     secret: process.env.STYTCH_SECRET,
-    // env: stytch.envs.test,
     env: stytch.envs.test,
     agent,
 });

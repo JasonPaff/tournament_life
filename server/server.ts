@@ -23,7 +23,6 @@ server.use(express.json());
 
 // Serve the React static files after build
 server.use(express.static('../client/dist'));
-//server.use(express.static(`${process.env.BUILD_DIR}client/dist`));
 
 server.listen(PORT, () => {
     console.log('Tournament Life server started');
@@ -41,5 +40,4 @@ server.use(
 // All unmatched requests will return the React app
 server.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
-    //res.sendFile(path.resolve(process.env.BUILD_DIR, 'client', 'dist', 'index.html'));
 });
