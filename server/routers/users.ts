@@ -1,11 +1,59 @@
 import { protectedProcedure, publicProcedure, router, stytchClient } from '../config';
 import { handleError, zodErrors, zodHelpers } from '../utils';
-import { User } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
+import type { User } from '@prisma/client';
+import { StrengthCheckResponse } from 'stytch/types/lib/passwords';
+
 export const userRouter = router({
+    verifyDisplayName: publicProcedure
+        .input(
+            z.object({
+                displayName: z
+                    .string(zodErrors.string('display name', 'The display name for the user.'))
+                    .min(4, zodErrors.min('display name', 4)),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const user = await ctx.prisma.user.findFirst({
+                where: { displayName: { equals: input.displayName, mode: 'insensitive' } },
+            });
+            return { isDisplayNameValid: !user };
+        }),
+    verifyEmailAddress: publicProcedure
+        .input(
+            z.object({
+                email: z
+                    .string(zodErrors.string('email', 'The email address for the user.'))
+                    .min(4, zodErrors.min('email address', 4)),
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const user = await ctx.prisma.user.findFirst({
+                where: { email: { equals: input.email, mode: 'insensitive' } },
+            });
+            return { isEmailAddressValid: !user };
+        }),
+    passwordStrength: publicProcedure
+        .input(
+            z.object({
+                email: z.string().email().optional(),
+                password: z
+                    .string(zodErrors.string('password', 'The password for the user.'))
+                    .min(8, zodErrors.min('password', 8)),
+            })
+        )
+        .query(async ({ ctx, input }): Promise<StrengthCheckResponse | null> => {
+            let strengthResponse: StrengthCheckResponse | null = null;
+            await stytchClient.passwords
+                .strengthCheck({ email: input.email, password: input.password })
+                .then((response) => (strengthResponse = response))
+                .catch(handleError);
+            return strengthResponse;
+        }),
     getUser: protectedProcedure
-        .input(z.string(zodErrors.string('ID', 'The database id of the user.')))
+        .input(z.string(zodErrors.string('ID', 'The id for the user.')))
         .query(async ({ ctx, input }): Promise<User | null> => {
             let user: User | null = null;
             await ctx.prisma.user
@@ -27,13 +75,38 @@ export const userRouter = router({
                     .string(zodErrors.string('email', 'The email address for the user.'))
                     .refine(zodHelpers.validateEmail, zodErrors.invalidEmail)
                     .transform(zodHelpers.normalizeEmail),
-                name: z.string(zodErrors.string('name', 'The full name for the user.')).nullish(),
+                firstName: z.string(zodErrors.string('first name', 'The first name of the user.')),
+                lastName: z.string(zodErrors.string('last name', 'The last name of the user.')),
                 password: z
                     .string(zodErrors.string('password', 'The password for the user.'))
                     .min(8, zodErrors.min('password', 8)),
             })
         )
         .mutation(async ({ ctx, input }) => {
+            // * Check for existing email or duplicate display name.
+            const existingUser = await ctx.prisma.user.findFirst({
+                where: {
+                    OR: [
+                        { email: { equals: input.email, mode: 'insensitive' } },
+                        { displayName: { equals: input.displayName, mode: 'insensitive' } },
+                    ],
+                },
+            });
+
+            // * Return an error if the email or display name already exists.
+            if (existingUser) {
+                if (zodHelpers.lowercase(existingUser.email) === zodHelpers.lowercase(input.email))
+                    throw new TRPCError({
+                        code: 'BAD_REQUEST',
+                        message: 'A user with that email address already exists',
+                    });
+                else if (zodHelpers.lowercase(existingUser.displayName) === zodHelpers.lowercase(input.displayName))
+                    throw new TRPCError({
+                        code: 'BAD_REQUEST',
+                        message: 'A user with that display name already exists',
+                    });
+            }
+
             // * create stytch user account.
             const stytchResponse = await stytchClient.passwords
                 .create({ email: input.email, password: input.password })
@@ -44,9 +117,10 @@ export const userRouter = router({
             await ctx.prisma.user
                 .create({
                     data: {
+                        firstName: input.firstName,
+                        lastName: input.lastName,
                         displayName: input.displayName,
                         email: input.email,
-                        name: input.name,
                         stytchUserId: stytchResponse.user.user_id,
                     },
                 })

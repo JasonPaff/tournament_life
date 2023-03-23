@@ -10,7 +10,7 @@ export const router = new ReactRouter({
     defaultPreload: 'intent',
 });
 
-// register your router for maximum type safety
+// register the router for maximum type safety
 declare module '@tanstack/react-router' {
     interface Register {
         router: typeof router;

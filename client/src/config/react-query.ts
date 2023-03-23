@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 import type { DefaultOptions } from '@tanstack/react-query';
 
-const defaultOptions: DefaultOptions<unknown> | undefined = {
+const defaultOptions: DefaultOptions = {
     mutations: {
         onError: (error) => {
             if (!(error instanceof TRPCClientError)) return;

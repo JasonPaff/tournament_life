@@ -1,7 +1,7 @@
-﻿import { createContext, useEffect, useState } from 'react';
+﻿import { createContext, useEffect } from 'react';
 import { useToggle } from '../hooks';
 
-import type { FCC } from '../types';
+import type { PropsWithChildren } from 'react';
 
 interface ColorModeContext {
     enableDarkMode: () => void;
@@ -19,7 +19,7 @@ export const colorModeContext = createContext<ColorModeContext>({
     toggleColorMode: () => null,
 });
 
-export const ColorModeProvider: FCC = ({ children }) => {
+export const ColorModeProvider = ({ children }: PropsWithChildren) => {
     const [isDarkMode, setIsDarkMode] = useToggle();
 
     const darkModeLocalStorageName = 'tournament_life_dark_mode';

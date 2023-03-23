@@ -8,7 +8,7 @@ export const rootRoute = new RootRoute({
     component: () => (
         <div
             className={
-                'flex min-h-screen flex-col items-center space-y-4 bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100'
+                'flex min-h-screen w-full flex-col items-center space-y-4 bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100'
             }
         >
             <RouteTestBar />
