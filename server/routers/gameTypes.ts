@@ -7,7 +7,7 @@ export const gameTypeRouter = router({
         .input(z.string(zodErrors.string('id', 'The database id of the game type.')))
         .query(async ({ ctx, input }) =>
             ctx.prisma.gameType.findFirst({
-                where: { createdBy: ctx.user.userId, id: input },
+                where: { createdBy: ctx.userId, id: input },
             })
         ),
     getGameTypes: protectedProcedure
@@ -23,7 +23,7 @@ export const gameTypeRouter = router({
         )
         .query(async ({ ctx, input }) =>
             ctx.prisma.gameType.findMany({
-                where: { ...input, createdBy: ctx.user.userId },
+                where: { ...input, createdBy: ctx.userId },
             })
         ),
     // createGameType: protectedProcedure
@@ -38,7 +38,7 @@ export const gameTypeRouter = router({
     //   )
     //   .mutation(async ({ ctx, input }) =>
     //     ctx.prisma.gameType.create({
-    //       data: { ...input, createdBy: ctx.user.userId },
+    //       data: { ...input, createdBy: ctx.userId },
     //     })
     //   ),
     updateGameType: protectedProcedure

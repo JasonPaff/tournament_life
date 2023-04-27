@@ -5,7 +5,7 @@ export const ColorMode = () => {
     const { isDarkMode, isLightMode, toggleColorMode } = useColorMode();
 
     return (
-        <div>
+        <div className={'mr-4 mt-1'}>
             {/* LIGHT MODE */}
             {isDarkMode && (
                 <SunIcon

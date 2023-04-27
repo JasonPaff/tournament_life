@@ -1,8 +1,8 @@
-﻿import { dashboardRoute, registerRoute, rootRoute, signInRoute } from '../features';
+﻿import { dashboardRoute, rootRoute } from '../features';
 import { ReactRouter } from '@tanstack/react-router';
 
 // create the route tree using our routes
-const routeTree = rootRoute.addChildren([dashboardRoute, registerRoute, signInRoute]);
+const routeTree = rootRoute.addChildren([dashboardRoute]);
 
 // create the router using the route tree
 export const router = new ReactRouter({

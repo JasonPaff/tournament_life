@@ -1,21 +1,24 @@
 import * as trpcExpress from '@trpc/server/adapters/express';
+import { LooseAuthProp } from '@clerk/clerk-sdk-node';
 import { initTRPC } from '@trpc/server';
+import superjson from 'superjson';
 import { prisma } from './prisma';
 import { ZodError } from 'zod';
 
-import type { inferAsyncReturnType } from '@trpc/server';
-
-type Context = inferAsyncReturnType<typeof createContext>;
+declare global {
+    namespace Express {
+        interface Request extends LooseAuthProp {}
+    }
+}
 
 // * Trpc with a custom error formatter to return zod validation errors.
-export const trpc = initTRPC.context<Context>().create({
+export const trpc = initTRPC.context<typeof createContext>().create({
     errorFormatter({ error, input, path, shape, type }) {
         return {
             code: shape.code,
             data: {
                 ...shape.data,
-                validationErrors:
-                    error.code === 'BAD_REQUEST' && error.cause instanceof ZodError ? error.cause.flatten() : null,
+                zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
             },
             errorCode: error.code,
             input: input,
@@ -24,18 +27,18 @@ export const trpc = initTRPC.context<Context>().create({
             type: type,
         };
     },
+    transformer: superjson,
 });
 
-export const createContextInner = async () => {
-    // TODO: Use authed user.
+export const createInnerTrpcContext = (userId: string) => {
     return {
         prisma,
-        user: { userId: 'a0a889d0-ebb0-4a76-a05a-6176c61a5191' },
+        userId: userId,
     };
 };
 
 export const createContext = async ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
-    const contextInner = await createContextInner();
+    const contextInner = createInnerTrpcContext(req.auth.userId);
 
     return {
         ...contextInner,
@@ -44,8 +47,8 @@ export const createContext = async ({ req, res }: trpcExpress.CreateExpressConte
     };
 };
 
-const isAuthed = trpc.middleware(({ next }) => {
-    // TODO: Actually auth.
+const isAuthed = trpc.middleware(({ ctx, next }) => {
+    if (!ctx.userId) throw new Error('Not Authorized!');
     return next();
 });
 

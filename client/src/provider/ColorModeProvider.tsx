@@ -1,7 +1,6 @@
-﻿import { createContext, useEffect } from 'react';
-import { useToggle } from '../hooks';
-
-import type { PropsWithChildren } from 'react';
+﻿import { useBrowserStorage, useToggle } from '../hooks';
+import { createContext, useEffect } from 'react';
+import { StorageKeys } from '../config';
 
 interface ColorModeContext {
     enableDarkMode: () => void;
@@ -19,14 +18,13 @@ export const colorModeContext = createContext<ColorModeContext>({
     toggleColorMode: () => null,
 });
 
-export const ColorModeProvider = ({ children }: PropsWithChildren) => {
+export const ColorModeProvider: FCC = ({ children }) => {
+    const { getFromLocalStorage, saveToLocalStorage } = useBrowserStorage();
     const [isDarkMode, setIsDarkMode] = useToggle();
-
-    const darkModeLocalStorageName = 'tournament_life_dark_mode';
 
     // Set the initial dark mode based on the property in local storage, if available.
     useEffect(() => {
-        const isDark = localStorage.getItem(darkModeLocalStorageName) == 'true';
+        const isDark = getFromLocalStorage<boolean>(StorageKeys.tournament_life_dark_mode);
         isDark ? enableDarkMode() : enableLightMode();
     }, []);
 
@@ -34,14 +32,14 @@ export const ColorModeProvider = ({ children }: PropsWithChildren) => {
     const enableDarkMode = () => {
         setIsDarkMode.on();
         document.querySelector('html')?.classList.add('dark');
-        localStorage.setItem(darkModeLocalStorageName, 'true');
+        saveToLocalStorage(StorageKeys.tournament_life_dark_mode, true);
     };
 
     // Enable light mode.
     const enableLightMode = () => {
         setIsDarkMode.off();
         document.querySelector('html')?.classList.remove('dark');
-        localStorage.setItem(darkModeLocalStorageName, 'false');
+        saveToLocalStorage(StorageKeys.tournament_life_dark_mode, false);
     };
 
     // Toggle between light mode and dark mode.

@@ -8,21 +8,18 @@ datasource db {
 }
 
 model User {
-  id           String       @id @default(uuid())
-  createdAt    DateTime     @default(now())
-  isActive     Boolean      @default(true)
-  isArchived   Boolean      @default(false)
-  firstName    String       @db.VarChar(24)
-  lastName     String       @db.VarChar(24)
-  displayName  String       @unique @db.VarChar(48)
-  email        String       @unique
-  role         Role         @default(USER)
-  stytchUserId String       @unique
-  updatedAt    DateTime?    @updatedAt
-  Template     Template[]
-  GameFormat   GameFormat[]
-  GameType     GameType[]
-  Venue        Venue[]
+  id         String       @id @default(uuid())
+  clerkId    String       @unique @db.VarChar(48)
+  firstName  String?      @db.VarChar(48)
+  lastName   String?      @db.VarChar(48)
+  username   String       @unique @db.VarChar(48)
+  email      String       @unique
+  role       Role         @default(USER)
+  createdAt  DateTime     @default(now())
+  Template   Template[]
+  GameFormat GameFormat[]
+  GameType   GameType[]
+  Venue      Venue[]
 
   @@index([email])
 }

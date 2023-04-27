@@ -27,7 +27,7 @@ export const Alert = ({ message, type }: AlertProps) => {
     };
 
     return (
-        <div className={clsx('flex items-center p-2 text-lg font-medium', styles[type])}>
+        <div className={clsx('text-md flex items-center p-2 font-medium', styles[type])}>
             <span className={'mr-2'}>{icons[type]}</span>
             <span>{message}</span>
         </div>

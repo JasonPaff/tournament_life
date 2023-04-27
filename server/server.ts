@@ -1,4 +1,6 @@
+import 'dotenv/config';
 import * as trpcExpress from '@trpc/server/adapters/express';
+import { ClerkExpressWithAuth } from '@clerk/clerk-sdk-node';
 import { createContext } from './config';
 import { appRouter } from './routers';
 import express from 'express';
@@ -29,15 +31,15 @@ server.listen(PORT, () => {
 });
 
 // API endpoint
-server.use(
-    '/trpc',
+server.use('/trpc', [
+    ClerkExpressWithAuth({}),
     trpcExpress.createExpressMiddleware({
         router: appRouter,
         createContext,
-    })
-);
+    }),
+]);
 
-// All unmatched requests will return the React app
+// All requests will return the React app
 server.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
 });

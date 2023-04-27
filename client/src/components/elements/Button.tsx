@@ -29,12 +29,8 @@ const Button = forwardRef<ButtonHandle, ButtonProps>(
             forwardedRef,
             () => {
                 return {
-                    focus: (options?: FocusOptions) => {
-                        buttonRef.current?.focus(options);
-                    },
-                    scrollIntoView: (arg?: boolean | ScrollIntoViewOptions) => {
-                        buttonRef.current?.scrollIntoView(arg);
-                    },
+                    focus: (options?: FocusOptions) => buttonRef.current?.focus(options),
+                    scrollIntoView: (arg?: boolean | ScrollIntoViewOptions) => buttonRef.current?.scrollIntoView(arg),
                 };
             },
             [buttonRef, forwardedRef]

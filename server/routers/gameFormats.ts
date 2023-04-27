@@ -7,7 +7,7 @@ export const gameFormatRouter = router({
         .input(z.string(zodErrors.string('id', 'The database id of the game format.')))
         .query(async ({ ctx, input }) =>
             ctx.prisma.gameFormat.findFirst({
-                where: { createdBy: ctx.user.userId, id: input },
+                where: { createdBy: ctx.userId, id: input },
             })
         ),
     getGameFormats: protectedProcedure
@@ -23,7 +23,7 @@ export const gameFormatRouter = router({
         )
         .query(async ({ ctx, input }) =>
             ctx.prisma.gameFormat.findMany({
-                where: { ...input, createdBy: ctx.user.userId },
+                where: { ...input, createdBy: ctx.userId },
             })
         ),
     // createGameFormat: protectedProcedure
