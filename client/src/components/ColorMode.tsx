@@ -5,11 +5,11 @@ export const ColorMode = () => {
     const { isDarkMode, isLightMode, toggleColorMode } = useColorMode();
 
     return (
-        <div className={'mr-4 mt-1'}>
+        <div>
             {/* LIGHT MODE */}
             {isDarkMode && (
                 <SunIcon
-                    className={'mt-1 h-7 w-7 cursor-pointer text-yellow-400 hover:text-opacity-75'}
+                    className={'h-7 w-7 cursor-pointer text-yellow-400 hover:text-opacity-75'}
                     onClick={toggleColorMode}
                 />
             )}
@@ -17,7 +17,7 @@ export const ColorMode = () => {
             {/* DARK MODE */}
             {isLightMode && (
                 <MoonIcon
-                    className={'mt-1 h-7 w-7 cursor-pointer text-gray-400 hover:text-opacity-75'}
+                    className={'h-7 w-7 cursor-pointer text-gray-400 hover:text-opacity-75'}
                     onClick={toggleColorMode}
                 />
             )}

@@ -26,21 +26,21 @@ export const gameFormatRouter = router({
                 where: { ...input, createdBy: ctx.userId },
             })
         ),
-    // createGameFormat: protectedProcedure
-    //   .input(
-    //     z.object({
-    //       name: z
-    //         .string(zodErrors.string("name", "The name for the game format."))
-    //         .trim()
-    //         .max(48, zodErrors.max("name", 48))
-    //         .transform(zodHelpers.lowercase),
-    //     })
-    //   )
-    //   .mutation(async ({ ctx, input }) =>
-    //     ctx.prisma.gameFormat.create({
-    //       data: { ...input, createdBy: ctx.user.userId },
-    //     })
-    //   ),
+    createGameFormat: protectedProcedure
+        .input(
+            z.object({
+                name: z
+                    .string(zodErrors.string('name', 'The name for the game format.'))
+                    .trim()
+                    .max(48, zodErrors.max('name', 48))
+                    .transform(zodHelpers.lowercase),
+            })
+        )
+        .mutation(async ({ ctx, input }) =>
+            ctx.prisma.gameFormat.create({
+                data: { createdBy: ctx.userId, name: input.name },
+            })
+        ),
     updateGameFormat: protectedProcedure
         .input(
             z.object({

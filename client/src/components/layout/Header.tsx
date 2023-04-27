@@ -1,6 +1,6 @@
 import { UserButton } from '@clerk/clerk-react';
-import { ColorMode } from './ColorMode';
-import { useColorMode } from '../hooks';
+import { ColorMode } from '../ColorMode';
+import { useColorMode } from '../../hooks';
 import { dark } from '@clerk/themes';
 
 export const Header = () => {

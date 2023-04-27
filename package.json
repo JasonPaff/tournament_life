@@ -26,7 +26,7 @@
     "stytch": "^5.17.0",
     "superjson": "^1.12.3",
     "validator": "^13.7.0",
-    "zod": "^3.20.2"
+    "zod": "^3.21.4"
   },
   "optionalDependencies": {
     "fsevents": "^2.1.2"

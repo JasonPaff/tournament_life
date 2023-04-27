@@ -1,3 +1,1 @@
-﻿export * from './RootRoute';
-
-export * from './dashboard';
+﻿export * from './dashboard';

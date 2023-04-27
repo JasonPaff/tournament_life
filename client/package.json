@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^4.15.3",
     "@clerk/themes": "^1.6.3",
+    "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.15",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^2.9.11",

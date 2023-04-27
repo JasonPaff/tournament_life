@@ -7,28 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id         String       @id @default(uuid())
-  clerkId    String       @unique @db.VarChar(48)
-  firstName  String?      @db.VarChar(48)
-  lastName   String?      @db.VarChar(48)
-  username   String       @unique @db.VarChar(48)
-  email      String       @unique
-  role       Role         @default(USER)
-  createdAt  DateTime     @default(now())
-  Template   Template[]
-  GameFormat GameFormat[]
-  GameType   GameType[]
-  Venue      Venue[]
-
-  @@index([email])
-}
-
-enum Role {
-  ADMIN
-  USER
-}
-
 // TODO: add blind structure
 model Template {
   id              String       @id @default(uuid())
@@ -56,7 +34,6 @@ model Template {
   updatedAt       DateTime?    @updatedAt
   venueId         String?
   gameFormats     GameFormat[]
-  creator         User         @relation(fields: [createdBy], references: [id], onDelete: Cascade)
   gameType        GameType?    @relation(fields: [gameTypeId], references: [id])
   venue           Venue?       @relation(fields: [venueId], references: [id])
 }
@@ -68,7 +45,6 @@ model GameFormat {
   isArchived Boolean    @default(false)
   name       String     @db.VarChar(48)
   templates  Template[]
-  creator    User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 
   @@unique([createdBy, name])
 }
@@ -80,7 +56,6 @@ model GameType {
   isArchived Boolean    @default(false)
   name       String     @db.VarChar(48)
   Template   Template[]
-  creator    User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 
   @@unique([createdBy, name])
 }
@@ -88,12 +63,12 @@ model GameType {
 model Venue {
   id         String     @id @default(uuid())
   createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now())
   createdBy  String
   isArchived Boolean    @default(false)
   name       String     @db.VarChar(48)
   type       VenueType
   Template   Template[]
-  creator    User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 
   @@unique([createdBy, name])
 }

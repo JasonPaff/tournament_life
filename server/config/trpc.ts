@@ -1,6 +1,6 @@
+import { clerkClient, LooseAuthProp } from '@clerk/clerk-sdk-node';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { LooseAuthProp } from '@clerk/clerk-sdk-node';
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { prisma } from './prisma';
 import { ZodError } from 'zod';
@@ -30,15 +30,18 @@ export const trpc = initTRPC.context<typeof createContext>().create({
     transformer: superjson,
 });
 
-export const createInnerTrpcContext = (userId: string) => {
+export const createInnerTrpcContext = async (userId: string) => {
+    const user = await clerkClient.users.getUser(userId);
+
     return {
         prisma,
-        userId: userId,
+        user: user,
+        userId: user.id,
     };
 };
 
 export const createContext = async ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
-    const contextInner = createInnerTrpcContext(req.auth.userId);
+    const contextInner = await createInnerTrpcContext(req.auth.userId);
 
     return {
         ...contextInner,
@@ -48,7 +51,7 @@ export const createContext = async ({ req, res }: trpcExpress.CreateExpressConte
 };
 
 const isAuthed = trpc.middleware(({ ctx, next }) => {
-    if (!ctx.userId) throw new Error('Not Authorized!');
+    if (!ctx.user?.id) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not Authorized!' });
     return next();
 });
 

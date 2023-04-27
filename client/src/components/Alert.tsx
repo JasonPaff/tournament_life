@@ -1,17 +1,17 @@
-import clsx from 'clsx';
-
-import type { PropsWithChildren } from 'react';
 import { ExclamationCircleIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import { CheckmarkIcon } from 'react-hot-toast';
+import clsx from 'clsx';
+
+import type { FC } from 'react';
 
 type AlertType = 'error' | 'info' | 'success' | 'warning';
 
-interface AlertProps extends PropsWithChildren {
+interface AlertProps {
     message: string;
     type: AlertType;
 }
 
-export const Alert = ({ message, type }: AlertProps) => {
+export const Alert: FC<AlertProps> = ({ message, type }) => {
     const styles: Record<AlertType, string> = {
         error: 'bg-red-100 border-red-400',
         info: 'bg-blue-200 border-blue-400 text-gray-800 dark:bg-slate-700 dark:text-gray-200',

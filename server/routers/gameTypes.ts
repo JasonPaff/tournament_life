@@ -26,21 +26,21 @@ export const gameTypeRouter = router({
                 where: { ...input, createdBy: ctx.userId },
             })
         ),
-    // createGameType: protectedProcedure
-    //   .input(
-    //     z.object({
-    //       name: z
-    //         .string(zodErrors.string("name", "The name for the game type."))
-    //         .trim()
-    //         .max(48, zodErrors.max("name", 48))
-    //         .transform(zodHelpers.lowercase),
-    //     })
-    //   )
-    //   .mutation(async ({ ctx, input }) =>
-    //     ctx.prisma.gameType.create({
-    //       data: { ...input, createdBy: ctx.userId },
-    //     })
-    //   ),
+    createGameType: protectedProcedure
+        .input(
+            z.object({
+                name: z
+                    .string(zodErrors.string('name', 'The name for the game type.'))
+                    .trim()
+                    .max(48, zodErrors.max('name', 48))
+                    .transform(zodHelpers.lowercase),
+            })
+        )
+        .mutation(async ({ ctx, input }) =>
+            ctx.prisma.gameType.create({
+                data: { createdBy: ctx.userId, name: input.name },
+            })
+        ),
     updateGameType: protectedProcedure
         .input(
             z.object({

@@ -28,179 +28,100 @@ export const templatesRouter = router({
             })
         ),
     // createTemplate: protectedProcedure
-    //   .input(
-    //     z.object({
-    //       create: z.object({
-    //         addonChips: z
-    //           .number(
-    //             zodErrors.number(
-    //               "addonChips",
-    //               "The number of addon chips for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("addonChips", 0))
-    //           .nullable(),
-    //         addonCost: z
-    //           .number(
-    //             zodErrors.number(
-    //               "addonCost",
-    //               "The addon cost for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("addonCost", 0))
-    //           .nullable(),
-    //         addonFee: z
-    //           .number(
-    //             zodErrors.number("addonFee", "The addon fee for the tournament.")
-    //           )
-    //           .min(0, zodErrors.min("addonFee", 0))
-    //           .nullable(),
-    //         blindLvlMinutes: z
-    //           .number(
-    //             zodErrors.number(
-    //               "blindLvlMinutes",
-    //               "The blind level time (in minutes) for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("blindLvlMinutes", 0))
-    //           .nullable(),
-    //         entryCost: z
-    //           .number(
-    //             zodErrors.number(
-    //               "entryCost",
-    //               "The entry cost for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("entryCost", 0))
-    //           .nullable(),
-    //         entryFee: z
-    //           .number(
-    //             zodErrors.number("entryFee", "The entry fee for the tournament.")
-    //           )
-    //           .min(0, zodErrors.min("entryFee", 0))
-    //           .nullable(),
-    //         fixedBounty: z
-    //           .number(
-    //             zodErrors.number(
-    //               "fixedBounty",
-    //               "The fixed bounty prize for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("fixedBounty", 0))
-    //           .nullable(),
-    //         gameTypeId: z
-    //           .string(
-    //             zodErrors.string(
-    //               "gameTypeId",
-    //               "The game type id for the tournament."
-    //             )
-    //           )
-    //           .nullable(),
-    //         guarantee: z
-    //           .number(
-    //             zodErrors.number("guarantee", "The guarantee for the tournament.")
-    //           )
-    //           .min(0, zodErrors.min("guarantee", 0))
-    //           .nullable(),
-    //         isSng: z
-    //           .boolean(
-    //             zodErrors.boolean(
-    //               "isSng",
-    //               "The sit and go status for the tournament."
-    //             )
-    //           )
-    //           .optional(),
-    //         lateRegMinutes: z
-    //           .number(
-    //             zodErrors.number(
-    //               "lateRegistration",
-    //               "The late registration time for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("lateRegistration", 0))
-    //           .nullable(),
-    //         name: z
-    //           .string(zodErrors.string("name", "The name for the tournament."))
-    //           .trim()
-    //           .max(48, zodErrors.max("name", 48))
-    //           .transform(zodHelpers.lowercase),
-    //         rebuyChips: z
-    //           .number(
-    //             zodErrors.number(
-    //               "rebuyChips",
-    //               "The number of rebuy chips for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("rebuyChips", 0))
-    //           .nullable(),
-    //         rebuyCost: z
-    //           .number(
-    //             zodErrors.number(
-    //               "rebuyCost",
-    //               "The rebuy cost for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("rebuyCost", 0))
-    //           .nullable(),
-    //         rebuyFee: z
-    //           .number(
-    //             zodErrors.number("rebuyFee", "The rebuy fee for the tournament.")
-    //           )
-    //           .min(0, zodErrors.min("rebuyFee", 0))
-    //           .nullable(),
-    //         startingChips: z
-    //           .number(
-    //             zodErrors.number(
-    //               "startingChips",
-    //               "The number of starting chips for the tournament."
-    //             )
-    //           )
-    //           .min(0, zodErrors.min("startingChips", 0))
-    //           .nullable(),
-    //         startTime: z
-    //           .string(
-    //             zodErrors.date("startTime", "The start time for the tournament.")
-    //           )
-    //           .datetime({ offset: true })
-    //           .nullable(),
-    //         tableSize: z
-    //           .number(
-    //             zodErrors.number(
-    //               "tableSize",
-    //               "The table size for the tournament."
-    //             )
-    //           )
-    //           .min(2, zodErrors.min("tableSize", 2))
-    //           .nullable(),
-    //         venueId: z
-    //           .string(
-    //             zodErrors.string("venueId", "The venue id for the tournament.")
-    //           )
-    //           .nullable(),
-    //       }),
-    //       gameFormats: z
-    //         .array(
-    //           z.object({
-    //             id: z.string(
-    //               zodErrors.string(
-    //                 "gameFormat",
-    //                 "A game format for the tournament."
-    //               )
-    //             ),
-    //           })
-    //         )
-    //         .optional(),
-    //     })
-    //   )
-    //   .mutation(async ({ ctx, input }) =>
-    //     ctx.prisma.template.create({
-    //       data: {
-    //         ...input.create,
-    //         gameFormats: { connect: input.gameFormats },
-    //       },
-    //       include: { gameFormats: true },
-    //     })
-    //   ),
+    //     .input(
+    //         z.object({
+    //             create: z.object({
+    //                 addonChips: z
+    //                     .number(zodErrors.number('addonChips', 'The number of addon chips for the tournament.'))
+    //                     .min(0, zodErrors.min('addonChips', 0))
+    //                     .nullable(),
+    //                 addonCost: z
+    //                     .number(zodErrors.number('addonCost', 'The addon cost for the tournament.'))
+    //                     .min(0, zodErrors.min('addonCost', 0))
+    //                     .nullable(),
+    //                 addonFee: z
+    //                     .number(zodErrors.number('addonFee', 'The addon fee for the tournament.'))
+    //                     .min(0, zodErrors.min('addonFee', 0))
+    //                     .nullable(),
+    //                 blindLvlMinutes: z
+    //                     .number(
+    //                         zodErrors.number('blindLvlMinutes', 'The blind level time (in minutes) for the tournament.')
+    //                     )
+    //                     .min(0, zodErrors.min('blindLvlMinutes', 0))
+    //                     .nullable(),
+    //                 entryCost: z
+    //                     .number(zodErrors.number('entryCost', 'The entry cost for the tournament.'))
+    //                     .min(0, zodErrors.min('entryCost', 0))
+    //                     .nullable(),
+    //                 entryFee: z
+    //                     .number(zodErrors.number('entryFee', 'The entry fee for the tournament.'))
+    //                     .min(0, zodErrors.min('entryFee', 0))
+    //                     .nullable(),
+    //                 fixedBounty: z
+    //                     .number(zodErrors.number('fixedBounty', 'The fixed bounty prize for the tournament.'))
+    //                     .min(0, zodErrors.min('fixedBounty', 0))
+    //                     .nullable(),
+    //                 gameType: z.string(zodErrors.string('gameType', 'The game type id for the tournament.')).nullable(),
+    //                 guarantee: z
+    //                     .number(zodErrors.number('guarantee', 'The guarantee for the tournament.'))
+    //                     .min(0, zodErrors.min('guarantee', 0))
+    //                     .nullable(),
+    //                 isSng: z
+    //                     .boolean(zodErrors.boolean('isSng', 'The sit and go status for the tournament.'))
+    //                     .optional(),
+    //                 lateRegMinutes: z
+    //                     .number(zodErrors.number('lateRegistration', 'The late registration time for the tournament.'))
+    //                     .min(0, zodErrors.min('lateRegistration', 0))
+    //                     .nullable(),
+    //                 name: z
+    //                     .string(zodErrors.string('name', 'The name for the tournament.'))
+    //                     .trim()
+    //                     .max(48, zodErrors.max('name', 48))
+    //                     .transform(zodHelpers.lowercase),
+    //                 rebuyChips: z
+    //                     .number(zodErrors.number('rebuyChips', 'The number of rebuy chips for the tournament.'))
+    //                     .min(0, zodErrors.min('rebuyChips', 0))
+    //                     .nullable(),
+    //                 rebuyCost: z
+    //                     .number(zodErrors.number('rebuyCost', 'The rebuy cost for the tournament.'))
+    //                     .min(0, zodErrors.min('rebuyCost', 0))
+    //                     .nullable(),
+    //                 rebuyFee: z
+    //                     .number(zodErrors.number('rebuyFee', 'The rebuy fee for the tournament.'))
+    //                     .min(0, zodErrors.min('rebuyFee', 0))
+    //                     .nullable(),
+    //                 startingChips: z
+    //                     .number(zodErrors.number('startingChips', 'The number of starting chips for the tournament.'))
+    //                     .min(0, zodErrors.min('startingChips', 0))
+    //                     .nullable(),
+    //                 startTime: z
+    //                     .string(zodErrors.date('startTime', 'The start time for the tournament.'))
+    //                     .datetime({ offset: true })
+    //                     .nullable(),
+    //                 tableSize: z
+    //                     .number(zodErrors.number('tableSize', 'The table size for the tournament.'))
+    //                     .min(2, zodErrors.min('tableSize', 2))
+    //                     .nullable(),
+    //                 venue: z.string(zodErrors.string('venue', 'The venue id for the tournament.')).nullable(),
+    //             }),
+    //             gameFormats: z
+    //                 .array(
+    //                     z.object({
+    //                         id: z.string(zodErrors.string('gameFormat', 'A game format for the tournament.')),
+    //                     })
+    //                 )
+    //                 .optional(),
+    //         })
+    //     )
+    //     .mutation(async ({ ctx, input }) =>
+    //         ctx.prisma.template.create({
+    //             data: {
+    //                 createdBy: ctx.userId,
+    //                 ...input.create,
+    //             },
+    //             include: { gameFormats: true },
+    //         })
+    //     ),
     updateTemplate: protectedProcedure
         .input(
             z.object({

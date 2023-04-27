@@ -23,38 +23,35 @@ export const venueRouter = router({
         )
         .query(async ({ ctx, input }) =>
             ctx.prisma.venue.findMany({
-                where: { ...input },
+                where: { ...input, createdBy: ctx.userId },
             })
         ),
-    // createVenue: protectedProcedure
-    //   .input(
-    //     z.object({
-    //       name: z
-    //         .string(zodErrors.string("name", "The name for the venue."))
-    //         .trim()
-    //         .max(48, zodErrors.max("name", 48))
-    //         .transform(zodHelpers.lowercase),
-    //       type: z
-    //         .string(zodErrors.string("type", "The type for the venue."))
-    //         .trim()
-    //         .refine(
-    //           (type) => type === VenueType.Physical || type === VenueType.Virtual,
-    //           {
-    //             message: `Type must be '${VenueType.Physical}' or '${VenueType.Virtual}'.`,
-    //             path: ["type"],
-    //           }
-    //         )
-    //         .transform((type) => {
-    //           if (type === VenueType.Physical) return VenueType.Physical;
-    //           return VenueType.Virtual;
-    //         }),
-    //     })
-    //   )
-    //   .mutation(async ({ ctx, input }) =>
-    //     ctx.prisma.venue.create({
-    //       data: { ...input, createdBy: ctx.user.userId },
-    //     })
-    //   ),
+    createVenue: protectedProcedure
+        .input(
+            z.object({
+                name: z
+                    .string(zodErrors.string('name', 'The name for the venue.'))
+                    .trim()
+                    .max(48, zodErrors.max('name', 48))
+                    .transform(zodHelpers.lowercase),
+                type: z
+                    .string(zodErrors.string('type', 'The type for the venue.'))
+                    .trim()
+                    .refine((type) => type === VenueType.Physical || type === VenueType.Virtual, {
+                        message: `Type must be '${VenueType.Physical}' or '${VenueType.Virtual}'.`,
+                        path: ['type'],
+                    })
+                    .transform((type) => {
+                        if (type === VenueType.Physical) return VenueType.Physical;
+                        return VenueType.Virtual;
+                    }),
+            })
+        )
+        .mutation(async ({ ctx, input }) =>
+            ctx.prisma.venue.create({
+                data: { createdBy: ctx.userId, name: input.name, type: input.type },
+            })
+        ),
     updateVenue: protectedProcedure
         .input(
             z.object({

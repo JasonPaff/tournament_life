@@ -1,19 +1,19 @@
-import { ClerkAuthProvider, ColorModeProvider, TrpcProvider } from './provider';
+import { ClerkAuthProvider, ColorModeProvider, DevProvider, QueryProvider } from './provider';
 import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
-import { RouterProvider } from '@tanstack/react-router';
-import { Header, TailwindToaster } from './components';
-import { router } from './config';
+import { Header, Sidebar, TailwindToaster } from './components';
+import { RouteProvider } from './provider';
 
 export const App = () => {
     return (
         <ColorModeProvider>
             <ClerkAuthProvider>
                 <SignedIn>
-                    <TrpcProvider>
+                    <QueryProvider>
+                        <RouteProvider />
                         <Header />
-                        <RouterProvider router={router} />
+                        <Sidebar />
                         <TailwindToaster />
-                    </TrpcProvider>
+                    </QueryProvider>
                 </SignedIn>
                 <SignedOut>
                     <RedirectToSignIn />
