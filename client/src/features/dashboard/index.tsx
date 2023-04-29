@@ -1,5 +1,5 @@
-﻿import { Route } from '@tanstack/react-router';
-import { rootRoute } from '../../provider';
+﻿import { rootRoute } from '../../providers';
+import { Route } from '@tanstack/router';
 import { Dashboard } from './components';
 
 export const dashboardRoute = new Route({

@@ -1,6 +1,6 @@
 ﻿import { useBrowserStorage, useToggle } from '../hooks';
 import { createContext, useEffect } from 'react';
-import { StorageKeys } from '../config';
+import { StorageKeys } from '../configs';
 
 interface ColorModeContext {
     enableDarkMode: () => void;

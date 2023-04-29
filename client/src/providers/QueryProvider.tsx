@@ -9,10 +9,11 @@ import superjson from 'superjson';
 import type { inferReactQueryProcedureOptions } from '@trpc/react-query';
 import type { DefaultOptions } from '@tanstack/react-query';
 import type { AppRouter } from '../../../server/routers';
-import type { inferRouterInputs } from '@trpc/server';
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 
 export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;
 export type RouterInputs = inferRouterInputs<AppRouter>;
+export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export const trpc = createTRPCReact<AppRouter>();
 

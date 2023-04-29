@@ -1,6 +1,6 @@
 {
-  "name": "tournament-life",
-  "version": "1.0.0",
+  "name": "tournament life API",
+  "version": "0.0.1",
   "description": "",
   "main": "server.js",
   "scripts": {

@@ -1,7 +1,6 @@
-import { ClerkAuthProvider, ColorModeProvider, DevProvider, QueryProvider } from './provider';
+import { ClerkAuthProvider, ColorModeProvider, QueryProvider } from './providers';
 import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
-import { Header, Sidebar, TailwindToaster } from './components';
-import { RouteProvider } from './provider';
+import { RouteProvider } from './providers';
 
 export const App = () => {
     return (
@@ -10,9 +9,6 @@ export const App = () => {
                 <SignedIn>
                     <QueryProvider>
                         <RouteProvider />
-                        <Header />
-                        <Sidebar />
-                        <TailwindToaster />
                     </QueryProvider>
                 </SignedIn>
                 <SignedOut>

@@ -1,8 +1,8 @@
+import type { FC } from 'react';
+
 import { ExclamationCircleIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import { CheckmarkIcon } from 'react-hot-toast';
 import clsx from 'clsx';
-
-import type { FC } from 'react';
 
 type AlertType = 'error' | 'info' | 'success' | 'warning';
 

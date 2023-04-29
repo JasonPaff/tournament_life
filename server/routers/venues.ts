@@ -47,11 +47,12 @@ export const venueRouter = router({
                     }),
             })
         )
-        .mutation(async ({ ctx, input }) =>
-            ctx.prisma.venue.create({
+        .mutation(async ({ ctx, input }) => {
+            // TODO: Check if venue already exists and if it's archived.
+            return ctx.prisma.venue.create({
                 data: { createdBy: ctx.userId, name: input.name, type: input.type },
-            })
-        ),
+            });
+        }),
     updateVenue: protectedProcedure
         .input(
             z.object({
@@ -94,8 +95,9 @@ export const venueRouter = router({
             })
         )
         .mutation(async ({ ctx, input }) =>
-            ctx.prisma.venue.delete({
+            ctx.prisma.venue.update({
                 where: { id: input.id },
+                data: { isArchived: true },
             })
         ),
 });

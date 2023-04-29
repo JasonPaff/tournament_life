@@ -1,10 +1,10 @@
-﻿import { useVenueQuery } from '../../../hooks';
+﻿import { useGetVenuesQuery } from '../../../hooks';
 import { useUser } from '@clerk/clerk-react';
 
 export const Dashboard = () => {
     const { user } = useUser();
 
-    const { data } = useVenueQuery();
+    const { data } = useGetVenuesQuery();
 
     return (
         <div className={'grid grid-cols-2 gap-y-1'}>

@@ -1,9 +1,9 @@
+import type { ToastType } from 'react-hot-toast';
+
 import { CheckIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import toast, { resolveValue, Toaster } from 'react-hot-toast';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
-
-import type { ToastType } from 'react-hot-toast';
 
 export const TailwindToaster = () => {
     const toastStyles: Record<ToastType, string> = {

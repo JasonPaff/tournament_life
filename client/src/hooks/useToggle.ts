@@ -8,7 +8,7 @@ export type ToggleSetter = {
 
 type InitialState = boolean | (() => boolean);
 
-export const useToggle = (initialState: InitialState = false): readonly [boolean, ToggleSetter] => {
+export const useToggle = (initialState: InitialState = false) => {
     const [value, setValue] = useState<boolean>(initialState);
 
     // Memoize in case we pass down the component.
