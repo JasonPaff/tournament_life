@@ -15,7 +15,7 @@ interface CommonProps<T> {
 }
 
 interface BusyProps {
-    busyContent: ReactNode | (() => ReactNode);
+    busyContent?: ReactNode | (() => ReactNode);
     isBusy: boolean;
 }
 
@@ -35,9 +35,11 @@ export const ComboBox = <T extends object>(props: ComboBoxProps<T>) => {
     const {
         allowCreate,
         allowDelete,
+        busyContent,
         createContent,
         displayValue,
         filter,
+        isBusy,
         items,
         label,
         notFoundContent,
@@ -51,6 +53,7 @@ export const ComboBox = <T extends object>(props: ComboBoxProps<T>) => {
     const filteredItems = query === '' ? items : filter(query);
 
     const isNotFoundContentAFunction = typeof notFoundContent === 'function';
+    const isBusyContentAFunction = typeof busyContent === 'function';
     const isCreateContentAFunction = typeof createContent === 'function';
 
     const onDeleteInternal = (event: MouseEvent, item: T) => {
@@ -87,10 +90,21 @@ export const ComboBox = <T extends object>(props: ComboBoxProps<T>) => {
                         )}
                     >
                         <>
+                            {/* Busy */}
+                            {isBusy && (
+                                <div className={'cursor-default select-none px-4'}>
+                                    <>
+                                        {((isBusyContentAFunction && busyContent()) || busyContent) ?? (
+                                            <div className={'mb-1 text-base'}>Loading...</div>
+                                        )}
+                                    </>
+                                </div>
+                            )}
+
                             {/* No Results */}
-                            {filteredItems.length === 0 && query !== '' && (
+                            {!isBusy && filteredItems.length === 0 && query !== '' && (
                                 <>
-                                    {((isNotFoundContentAFunction && notFoundContent?.(query)) || notFoundContent) ?? (
+                                    {((isNotFoundContentAFunction && notFoundContent(query)) || notFoundContent) ?? (
                                         <div className={'cursor-default select-none px-4'}>
                                             <div className={'mb-1 text-base'}>Nothing found.</div>
                                         </div>
@@ -101,64 +115,67 @@ export const ComboBox = <T extends object>(props: ComboBoxProps<T>) => {
                             )}
 
                             {/* Results */}
-                            {filteredItems.map((item) => (
-                                <Combobox.Option
-                                    key={optionKey(item)}
-                                    value={item}
-                                    className={({ active }) =>
-                                        clsx(
-                                            'relative cursor-default select-none py-2 pl-3 pr-9',
-                                            active
-                                                ? 'bg-indigo-600 text-white dark:bg-indigo-500'
-                                                : 'text-gray-900 dark:text-gray-100'
-                                        )
-                                    }
-                                >
-                                    {({ active, selected }) => (
-                                        <>
-                                            <div className={'flex items-center'}>
-                                                {/* Delete Button */}
-                                                {allowDelete && (
-                                                    <button onClick={(event) => onDeleteInternal(event, item)}>
-                                                        <TrashIcon
-                                                            aria-hidden={'true'}
-                                                            className={clsx(
-                                                                'h-3.5 w-3.5',
-                                                                active
-                                                                    ? 'text-red-300 dark:text-red-400'
-                                                                    : 'text-red-500 dark:text-red-300'
-                                                            )}
-                                                        />
-                                                    </button>
+                            {!isBusy &&
+                                filteredItems.map((item) => (
+                                    <Combobox.Option
+                                        key={optionKey(item)}
+                                        value={item}
+                                        className={({ active }) =>
+                                            clsx(
+                                                'relative cursor-default select-none py-2 pl-3 pr-9',
+                                                active
+                                                    ? 'bg-indigo-600 text-white dark:bg-indigo-500'
+                                                    : 'text-gray-900 dark:text-gray-100'
+                                            )
+                                        }
+                                    >
+                                        {({ active, selected }) => (
+                                            <>
+                                                <div className={'flex items-center'}>
+                                                    {/* Delete Button */}
+                                                    {allowDelete && (
+                                                        <button onClick={(event) => onDeleteInternal(event, item)}>
+                                                            <TrashIcon
+                                                                aria-hidden={'true'}
+                                                                className={clsx(
+                                                                    'h-3.5 w-3.5',
+                                                                    active
+                                                                        ? 'text-red-300 dark:text-red-400'
+                                                                        : 'text-red-500 dark:text-red-300'
+                                                                )}
+                                                            />
+                                                        </button>
+                                                    )}
+
+                                                    {/* Display Value */}
+                                                    <span
+                                                        className={clsx(
+                                                            'truncate',
+                                                            selected && 'font-semibold',
+                                                            allowDelete && 'ml-3'
+                                                        )}
+                                                    >
+                                                        {displayValue(item)}
+                                                    </span>
+                                                </div>
+
+                                                {/* Selected Icon */}
+                                                {selected && (
+                                                    <span
+                                                        className={clsx(
+                                                            'absolute inset-y-0 right-0 flex items-center pr-4',
+                                                            active
+                                                                ? 'text-white'
+                                                                : 'text-indigo-600 dark:text-indigo-400'
+                                                        )}
+                                                    >
+                                                        <CheckIcon aria-hidden={'true'} className={'h-5 w-5'} />
+                                                    </span>
                                                 )}
-
-                                                {/* Display Value */}
-                                                <span
-                                                    className={clsx(
-                                                        'truncate',
-                                                        selected && 'font-semibold',
-                                                        allowDelete && 'ml-3'
-                                                    )}
-                                                >
-                                                    {displayValue(item)}
-                                                </span>
-                                            </div>
-
-                                            {/* Selected Icon */}
-                                            {selected && (
-                                                <span
-                                                    className={clsx(
-                                                        'absolute inset-y-0 right-0 flex items-center pr-4',
-                                                        active ? 'text-white' : 'text-indigo-600 dark:text-indigo-400'
-                                                    )}
-                                                >
-                                                    <CheckIcon aria-hidden={'true'} className={'h-5 w-5'} />
-                                                </span>
-                                            )}
-                                        </>
-                                    )}
-                                </Combobox.Option>
-                            ))}
+                                            </>
+                                        )}
+                                    </Combobox.Option>
+                                ))}
                         </>
                     </Combobox.Options>
                 </div>
